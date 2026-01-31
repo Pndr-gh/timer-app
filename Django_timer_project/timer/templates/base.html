@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "base.css" %}">
+    {% block css %}
+    {% endblock css %}
+</head>
+<body>
+    <h1>this is a timer</h1>
+    <nav class="navbar" id= "navbar">
+        {% for x in navbar %}
+            <div class="nav-element">{{x}}</div>
+        {% endfor %}
+        <div class="hamburger"><img src="{% static "hamburger.png" %}" alt="" onclick= "handle_hamburger()"></div>
+    </nav>
+
+    {% block main %}{% endblock main %}
+    {% block js %}{% endblock js %}
+</body>
+</html>

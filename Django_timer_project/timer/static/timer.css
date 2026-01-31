@@ -1,0 +1,135 @@
+
+.selector-div{
+    display: flex;
+    justify-content: center;
+    background-color: cadetblue;
+    align-items: center;
+}
+
+.two-dots{
+    display: flex;
+    align-items: center;
+}
+
+
+
+.time-selector-div div{
+    text-align: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.timer-grid {
+    background-color: aqua;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 2rem;
+    padding: 1rem;
+}
+@media (min-width: 500px){
+    .timer-grid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (min-width: 1024px){
+    .timer-grid{
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1524px){
+    .timer-grid{
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.timer-div{
+    display: grid;
+    width: 1fr;
+    aspect-ratio: 1 / 1;
+    background-color: rgb(197, 197, 197);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    border-radius: 20px;
+    position: relative;
+    /* border: 2px solid black; */
+}
+
+.timer-circle {
+    background-color: rgb(255, 255, 255);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    
+}
+
+.timer-div button{
+    position: relative;
+    border: 0px;
+    background-color: rgb(197, 197, 197);
+
+    border-radius: 19px;
+    /* border: 2px solid rgba(44, 44, 44, 0.068) ; */
+}
+
+.timer-div button:hover{
+    background-color: rgba(221, 221, 221, 0.822);
+    transition: 0.2s;
+
+}
+
+.timer-div button:active{
+    background-color: rgba(228, 228, 228, 0.822);
+    transform: scale(1.03);
+}
+
+
+.timer-div button span{
+    position: absolute;
+    
+}
+
+.btn-top-left img{
+    position: absolute;
+    left: 0.8rem;
+    top: 0.8rem;
+    width: 20%;
+}
+.btn-top-right span{
+    top: 0.8rem;
+    right: 0.8rem;
+    font-size: 1rem;
+    font-weight: 500;
+
+}
+.btn-bottom-right img{
+    position: absolute;
+    width: 30%;
+    bottom: 0.3rem;
+    right: 0.3rem;
+}
+
+.btn-bottom-left img{
+    position: absolute;
+    width: 15%;
+    bottom: 1rem;
+    left: 1rem;
+}
+
+
+
+
+#timer_number {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
