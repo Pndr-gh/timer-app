@@ -11,43 +11,47 @@
 {% block main %}
     <main id= "main-element">
 
-        <div class= "selector-div">
+        <div class="selector-holder" id= "selector-holder">
 
-            <div class= "time-selector-div">
-                <button class= "up-button" id= "hour-up-button" onclick= "upper_arrow(0)">↑</button>
-                <div id= "hour" class= "time-selector-number">0</div>
-                <button class= "down-button" id= "hour-down-button" onclick= "lower_arrow(0)">↓</button>
-            </div>
-            <div class= "two-dots">:</div>
-            <div class= "time-selector-div">
-                <button class= "up-button" id= "minute-up-button" onclick= "upper_arrow(1)">↑</button>
-                <div id= "minute" class= "time-selector-number">0</div>
-                <button class= "down-button" id= "minute-down-button" onclick= "lower_arrow(1)">↓</button>
-            </div>
-            <div class= "two-dots">:</div>
-            <div class= "time-selector-div">
-                <button class= "up-button" id= "second-up-button" onclick= "upper_arrow(2)">↑</button>
-                <div id= "second" class= "time-selector-number">0</div>
-                <button class= "down-button" id= "second-down-button" onclick= "lower_arrow(2)">↓</button>                
-            </div>
-            <button id= 'save-button' onclick= "save_time()">Save</button>
+            <div class= "selector-div" id= 'selector-div'>
 
+                <div class= "time-selector-div">
+                    <button class= "up-button" id= "hour-up-button" onclick= "upper_arrow(0)">↑</button>
+                    <div id= "hour" class= "time-selector-number">0</div>
+                    <button class= "down-button" id= "hour-down-button" onclick= "lower_arrow(0)">↓</button>
+                </div>
+                <div class= "two-dots">:</div>
+                <div class= "time-selector-div">
+                    <button class= "up-button" id= "minute-up-button" onclick= "upper_arrow(1)">↑</button>
+                    <div id= "minute" class= "time-selector-number">0</div>
+                    <button class= "down-button" id= "minute-down-button" onclick= "lower_arrow(1)">↓</button>
+                </div>
+                <div class= "two-dots">:</div>
+                <div class= "time-selector-div">
+                    <button class= "up-button" id= "second-up-button" onclick= "upper_arrow(2)">↑</button>
+                    <div id= "second" class= "time-selector-number">0</div>
+                    <button class= "down-button" id= "second-down-button" onclick= "lower_arrow(2)">↓</button>                
+                </div>
+                <button id= 'save-button' onclick= "save_time()">Save</button>
+
+            </div>
         </div>
+
         
         <div class= "timer-grid">
             {% for x in y %}
             <div class= "timer-div">
-                <button class="btn-top-left" onclick= "reset_timer()"><img src="{% static "reset2.png" %}" alt="">
+                <button class="btn-top-left" onclick= "reset_timer({{ x }})"><img src="{% static "reset2.png" %}" alt="">
                 </button>
-                <button class="btn-top-right"><span>Edit</span>
+                <button class="btn-top-right" id= "btn-top-right" onclick= "handle_edit({{ x }})"><span>Edit</span>
                 </button>
-                <button class="btn-bottom-left" onclick= "start_timer()"><img src="{% static "Play.png" %}" alt="">
+                <button class="btn-bottom-left" onclick= "start_timer({{ x }})"><img src="{% static "Play.png" %}" alt="">
                 </button>
-                <button class="btn-bottom-right" onclick= "pause_timer()"><img src="{% static "pause.png" %}" alt="">
+                <button class="btn-bottom-right" onclick= "pause_timer({{ x }})"><img src="{% static "pause.png" %}" alt="">
                 </button>
 
                 <div class="timer-circle">
-                    <div id = "timer_number">00:00:00</div>
+                    <div class= "timer_number{{x}}"  id = "timer_number">00:00:00</div>
                 </div>
             </div>
             {% endfor %}

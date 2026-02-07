@@ -1,5 +1,7 @@
-let timeInterval;
-let timeInSeconds = 0;
+let timeIntervals = {};
+let timesInSeconds = {};
+let Selected_times = {};
+let timerIdSaver;
 
 function save_time(){
 
@@ -7,25 +9,33 @@ function save_time(){
     const seconds = Number(document.getElementById('second').innerHTML);
     const hours = Number(document.getElementById('hour').innerHTML);
 
-    timeInSeconds = seconds + minutes*60 + hours*3600;
+    timesInSeconds[timerIdSaver] = seconds + minutes*60 + hours*3600;
+    Selected_times[timerIdSaver] = seconds + minutes*60 + hours*3600;
+
     
     const formattedTime = 
         (hours < 10 ? "0" + hours : hours) + ":" +
         (minutes < 10 ? "0" + minutes : minutes) + ":" + 
         (seconds < 10 ? "0" + seconds : seconds);
-    console.log(minutes);
-    document.getElementById("timer_number").innerHTML = formattedTime;
+    timerNumber = document.querySelector(".timer_number" + timerIdSaver);
+    timerNumber.innerHTML = formattedTime;
+    let selectorHolder = document.getElementById('selector-holder');
+    selectorHolder.classList.toggle('editing-view');
 }
 
-function start_timer(){
-    clearInterval(timeInterval);
-    timeInSeconds = timeInSeconds
+function start_timer(id){
+    clearInterval(timeIntervals[id]);
+    if (timesInSeconds[id] === undefined){
+        timesInSeconds[id] = 0;
+    }
 
-    timeInterval = setInterval(() => {
-        timeInSeconds--;
+    timeIntervals[id] = setInterval(() => {
+        timesInSeconds[id]--;
+        let timeInSeconds = timesInSeconds[id];
         if (timeInSeconds <= 0){
-            clearInterval(timeInterval);
-            document.getElementById('timer_number').innerHTML = "Time's up!"
+            clearInterval(timeIntervals[id]);
+            const timerNumber = document.querySelector(".timer_number" + id);
+            timerNumber.innerHTML = "Time's up!";
             return;
         }
 
@@ -36,26 +46,32 @@ function start_timer(){
                 (hours < 10 ? "0" + hours : hours) + ":" +
                 (minutes < 10 ? "0" + minutes : minutes) + ":" + 
                 (seconds < 10 ? "0" + seconds : seconds);
-        document.getElementById("timer_number").innerHTML = formattedTime;
+        timerNumber = document.querySelector(".timer_number" + id);
+        timerNumber.innerHTML = formattedTime;
 
     }, 1000);
 }
 
-function reset_timer(){
-    clearInterval(timeInterval);
-    let minute = document.getElementById('minute').innerHTML;
-    let second = document.getElementById('second').innerHTML;
-    let hour = document.getElementById('hour').innerHTML;
+function reset_timer(id){
+    clearInterval(timeIntervals[id]);
+    // let minute = document.getElementById('minute').innerHTML;
+    // let second = document.getElementById('second').innerHTML;
+    // let hour = document.getElementById('hour').innerHTML;
+
+    let second = Selected_times[id] % 60;
+    let hour = Math.floor(Selected_times[id] / 3600);
+    let minute = Math.floor(Selected_times[id] / 60) % 60;
     const formattedTime = 
         (hour < 10 ? "0" + hour : hour) + ":" +
         (minute < 10 ? "0" + minute : minute) + ":" + 
         (second < 10 ? "0" + second : second);
-    timeInSeconds = Number(second) + (Number(minute) * 60) + (Number(hour) * 3600);
-    document.getElementById('timer_number').innerHTML = formattedTime;
+    timesInSeconds[id] = Selected_times[id];
+    timerNumber = document.querySelector(".timer_number" + id);
+    timerNumber.innerHTML = formattedTime;
 }
 
-function pause_timer(){
-  clearInterval(timeInterval);  
+function pause_timer(id){
+  clearInterval(timeIntervals[id]);
 }
 
 function upper_arrow(selector){
@@ -125,5 +141,12 @@ function lower_arrow(selector){
 }
 
 function handle_hamburger(){
-    navHolder = document.getElementByIdy("navbar").innerHTML;
+    let navHolder = document.getElementById('navbar');
+    navHolder.classList.toggle("mobile-view");
+}
+
+function handle_edit(id){
+    timerIdSaver = id;
+    let selectorHolder = document.getElementById('selector-holder');
+    selectorHolder.classList.toggle('editing-view');
 }

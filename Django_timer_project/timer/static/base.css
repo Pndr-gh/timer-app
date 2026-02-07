@@ -3,6 +3,12 @@
 
 }
 
+body{
+    margin: 0px;
+    background-color: grey;
+
+}
+
 html{
     background-color: grey;
     margin: 0 5% 0 5%;
@@ -22,7 +28,7 @@ html{
 
 .navbar{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     height: 5rem;
     justify-content: space-around;
     align-items: center;
@@ -30,10 +36,32 @@ html{
 
 }
 
+.navbar.mobile-view{
+    flex-direction: column;
+    height: auto;
+    position: absolute;
+    z-index: 10;
+    right: 5%;
+    left: 5%;
+    border-radius: 10px;
+    padding-bottom: 1rem;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+}
+
+.navbar.mobile-view .nav-element{
+    display: block;
+    text-align: center;
+}
+
 .nav-element{
     padding: 1rem 1rem 1rem 1rem;
-    border-radius: 30%;
+    /* border-radius: 30%; */
     display: none;
+}
+
+.nav-element:hover{
+    background-color: rgba(235, 220, 201, 0.918);
+
 }
 
 .hamburger{
@@ -44,16 +72,36 @@ html{
 
 }
 
-.hamburger img{
-    width: 9%;
+.hamburger button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+    aspect-ratio: 1 / 1;
     padding: 1rem;
-    border-radius: 20%;
+    border: 0px;
+    border-radius: 25%;
+    background-color: antiquewhite;
+}
+
+.hamburger button:hover{
+    background-color: rgba(240, 224, 204, 0.829);
+    transition: 0.3s ease;
+}
+
+.hamburger button:active{
+    background-color: rgba(224, 210, 193, 0.733);
+    transform: scale(1.03);
+}
+
+.hamburger img{
+    width: 100%;
+
 
 }
 
 @media (min-width: 600px){
     .navbar{
-        height: auto;
         flex-direction: row;
     }
     .nav-element{
