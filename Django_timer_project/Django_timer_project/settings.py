@@ -122,6 +122,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
     BASE_DIR / '/timer/static/',
+    BASE_DIR / '/userManagement/static/',
 ]
 
 # Default primary key field type

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'register.css' %}">
+{% endblock css %}
+
+{% block main %}
+
+<form method="post" class= "signup-form">{% csrf_token %}
+    {{ form.username }}
+    {{ form.password1 }}
+    {{ form.password2 }}
+    <input id= "submit-button-signup" type="submit" />
+</form>
+
+{% endblock main %}

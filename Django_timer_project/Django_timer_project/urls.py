@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from timer.views import timer_view
+from userManagement.views import signUp_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('timer/', timer_view)
+    path('timer/', timer_view),
+    path('login/', signUp_view),
 ]
