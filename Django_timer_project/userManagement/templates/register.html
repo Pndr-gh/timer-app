@@ -8,11 +8,50 @@
 
 {% block main %}
 
-<form method="post" class= "signup-form">{% csrf_token %}
-    {{ form.username }}
-    {{ form.password1 }}
-    {{ form.password2 }}
-    <input id= "submit-button-signup" type="submit" />
-</form>
+<main class= "signup-div">
+
+    <form method="post" class= "signup-form">{% csrf_token %}
+
+        <span class="create-title">
+            Create an account
+        </span>
+
+        <div class="username-div">
+            <span class="username-help-text">
+                Username
+            </span>
+            {{ form.username }}
+        </div>
+        <span class="erorrs">
+            {{ erorrs.username }}
+        </span>
+        <div class="pass1-div">
+            <span class="pass1-help-text">
+                Password
+            </span>
+            {{ form.password1 }}
+        </div>
+        
+        <div class="pass2-div">
+            <span class="password2-help-text">
+                Repeat password
+            </span>
+            {{ form.password2 }}
+        </div>
+        <span class="erorrs">
+            {{ erorrs.password2 }}
+        </span>
+
+        <input id= "submit-button-signup" type="submit" />
+    </form>
+
+</main>
+
+
+{% block js %}
+    <script src= "{% static 'timer.js' %}" ></script>
+{% endblock js %}
+
+
 
 {% endblock main %}

@@ -1,0 +1,84 @@
+main {
+    display: flex;
+    justify-content: center;
+    background-color: aqua;
+    width: 100%;
+    height: 40rem;
+}
+
+.signup-form {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    width: 70%;
+    background-color: red;
+}
+
+@media (min-width: 600px){
+    .signup-form {
+        width: 55%;
+    }
+    .create-title {
+        font-size: 1.8rem;
+    }
+}
+@media (min-width: 1240px){
+    .signup-form {
+        width: 40%;
+    }
+    .create-title {
+        font-size: 2rem;
+    }
+}
+
+.signup-form div{
+    width: 90%;
+    height: 15%;
+    background-color: cadetblue;
+    border-radius: 5px;
+}
+
+.create-title {
+    font-size: 1.6rem;
+}
+
+.signup-form div {
+    position: relative;
+}
+
+.signup-form div input{
+    display: block;
+    height: 50%;
+    position: absolute;
+    right: 0px;
+    left: 0px;
+
+}
+
+.username-div {
+    margin-top: 3rem;
+    position: relative;
+}
+
+.username-help-text {
+    display: block;
+}
+#id_username {
+    background-color: rgb(123, 201, 203);
+    border: none;
+    
+}
+
+
+
+
+.errorlist {
+    display: block;
+}
+
+.errorlist li{
+    font-size: 0.8rem;
+}

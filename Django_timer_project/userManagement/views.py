@@ -14,7 +14,10 @@ def signUp_view(request):
     elif request.method == 'POST':
         form = UserCreationForm(request.POST)
         if not form.is_valid():
-            return render(request, 'register.html', {'form': form.errors})
+            formErrors = form.errors
+            print(formErrors)
+
+            return render(request, 'register.html', {'form': form, 'y': y, 'navbar': navbar, 'erorrs': formErrors})
 
         else:
             form.save()

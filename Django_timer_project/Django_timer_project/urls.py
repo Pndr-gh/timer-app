@@ -16,11 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from timer.views import timer_view
+from timer.views import *
 from userManagement.views import signUp_view
+from django.http import HttpResponse
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('timer/', timer_view),
-    path('login/', signUp_view),
+    path('timer/', timer_view, name='Timer'),
+    path('signup/', signUp_view, name='Account'),
+    path('task/', task_view, name="Tasks"),
+    path('calender/', calender_view, name="Calender"),
+    path('long-term-goals/', goal_view, name="Long term goals"),
 ]
