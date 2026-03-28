@@ -30,10 +30,15 @@ html{
     display: flex;
     flex-direction: row;
     height: 5rem;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     background-color: antiquewhite;
 
+}
+
+.navbar a {
+    text-decoration: none;
+    color: black;
 }
 
 .navbar.mobile-view{
@@ -57,6 +62,8 @@ html{
     padding: 1rem 1rem 1rem 1rem;
     /* border-radius: 30%; */
     display: none;
+    font-size: 1.2rem;
+
 }
 
 .nav-element:hover{
@@ -115,6 +122,15 @@ html{
 }
 
 
-h1{
-    text-align: center;
+/* .h1-texts-div {
+    height: 8rem;
+    background-color: brown;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+.h1-text{
+    text-align: center;
+    margin: 0px;
+} */

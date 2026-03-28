@@ -11,51 +11,105 @@
 {% block main %}
     <main id= "main-element">
 
-        <div class="selector-holder" id= "selector-holder">
-
+        <div class="selector-overlay" id= "selector-overlay">
             <div class= "selector-div" id= 'selector-div'>
+                {% for x in y%}
+                    <div class="selector-holder" id="selector-holder">
+                        <button class="exit-button" onclick="handle_selector_exit()">X</button>
 
-                <div class= "time-selector-div">
-                    <button class= "up-button" id= "hour-up-button" onclick= "upper_arrow(0)">↑</button>
-                    <div id= "hour" class= "time-selector-number">0</div>
-                    <button class= "down-button" id= "hour-down-button" onclick= "lower_arrow(0)">↓</button>
-                </div>
-                <div class= "two-dots">:</div>
-                <div class= "time-selector-div">
-                    <button class= "up-button" id= "minute-up-button" onclick= "upper_arrow(1)">↑</button>
-                    <div id= "minute" class= "time-selector-number">0</div>
-                    <button class= "down-button" id= "minute-down-button" onclick= "lower_arrow(1)">↓</button>
-                </div>
-                <div class= "two-dots">:</div>
-                <div class= "time-selector-div">
-                    <button class= "up-button" id= "second-up-button" onclick= "upper_arrow(2)">↑</button>
-                    <div id= "second" class= "time-selector-number">0</div>
-                    <button class= "down-button" id= "second-down-button" onclick= "lower_arrow(2)">↓</button>                
-                </div>
-                <button id= 'save-button' onclick= "save_time()">Save</button>
-
+                        <div class= "time-selector-div">
+                            <button class= "up-button" id= "hour-up-button" onclick= "upper_arrow(0, {{x}})">↑</button>
+                            <div id= "hour{{x}}" class= "time-selector-number">0</div>
+                            <button class= "down-button" id= "hour-down-button" onclick= "lower_arrow(0, {{x}})">↓</button>
+                        </div>
+                        <div class= "two-dots">:</div>
+                        <div class= "time-selector-div">
+                            <button class= "up-button" id= "minute-up-button" onclick= "upper_arrow(1, {{x}})">↑</button>
+                            <div id= "minute{{x}}" class= "time-selector-number">0</div>
+                            <button class= "down-button" id= "minute-down-button" onclick= "lower_arrow(1, {{x}})">↓</button>
+                        </div>
+                        <div class= "two-dots">:</div>
+                        <div class= "time-selector-div">
+                            <button class= "up-button" id= "second-up-button" onclick= "upper_arrow(2, {{x}})">↑</button>
+                            <div id= "second{{x}}" class= "time-selector-number">0</div>
+                            <button class= "down-button" id= "second-down-button" onclick= "lower_arrow(2, {{x}})">↓</button>                
+                        </div>
+                        <button id= 'save-button' onclick= "save_time({{x}})">Save</button>                    
+                    </div>
+                {% endfor %}
             </div>
         </div>
 
-        
+        <div class="warning-background" id="pause-warning-background">
+            <div class="warning-div">
+                <p id="warning-p"></p>
+                <div class="warning-button-holder">
+                    <button class="warning-button" id="warning-yes-button" onclick="handle_pomo_reset(1)">Yes</button>
+                    <button class="warning-button" id="warning-no-button" onclick="handle_pomo_reset(2)">No</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="session-timer-flex">
+
+            <span class="session-timer-span">
+                <button class="session-start-button pressed-pause" id="session-start-button" onclick="handle_session_start()">
+                    <img src="{% static "Play.png" %}" alt="">
+                </button>
+                <button class="session-pause-button pressed-pause" id="session-pause-button" onclick="handle_session_pause()">
+                    <img src="{% static "pause.png" %}" alt="">
+                </button>
+                <div class= "timer-num timer_number0"  id = "timer_number0" onclick="handle_edit()">01:25:00</div>
+                <button class="session-reset-button" onclick="handle_session_reset()">
+                    <img src="{% static "reset2.png" %}" alt="">
+                </button>
+            </span>
+
+
+
+        </div>
+
+        <div class="session-timer-buttons">
+            <span style="font-size: 1.4rem;
+                        ">Session</span>
+            
+        </div>
+
+
         <div class= "timer-grid">
-            {% for x in y %}
             <div class= "timer-div">
-                <button class="btn-top-left" onclick= "reset_timer({{ x }})"><img src="{% static "reset2.png" %}" alt="">
+                <button class="btn-top-left" onclick= "handle_pomo_reset(0)"><img src="{% static "reset2.png" %}" alt="">
                 </button>
-                <button class="btn-top-right" id= "btn-top-right" onclick= "handle_edit({{ x }})"><span>Edit</span>
+                <button class="btn-top-right" id= "btn-top-right" onclick= "handle_edit()"><span>Edit</span>
                 </button>
-                <button class="btn-bottom-left" onclick= "start_timer({{ x }})"><img src="{% static "Play.png" %}" alt="">
+                <button class="btn-bottom-left" onclick= "handle_session_start()"><img src="{% static "Play.png" %}" alt="">
                 </button>
-                <button class="btn-bottom-right" onclick= "pause_timer({{ x }})"><img src="{% static "pause.png" %}" alt="">
+                <button class="btn-bottom-right" onclick= "handle_pomo_pause()"><span>Rest</span>
                 </button>
 
-                <div class="timer-circle">
-                    <div class= "timer_number{{x}}"  id = "timer_number">00:00:00</div>
+                <div class="timer-circle" id="pomo-timer-circle">
+                    <div class= "timer-num timer_number1"  id = "timer_number1">00:25:00</div>
                 </div>
             </div>
-            {% endfor %}
+            
+            <div class= "timer-div rest-divs" id="rest-timer-overlay-div">     
+            </div>
+
+            <div class= "timer-div rest-divs rest-timer-div" id="rest-timer-div">
+
+                <span class="rest-timer-holder">
+                    <div class="rest-timer-void">rest</div>
+                    <div class= "timer-num timer_number2"  id = "timer_number2">00:05:00</div>
+                    <div class="rest-timer-void">
+                        <button class="rest-skip-button" onclick="rest_skip_button()">Skip</button>
+                        <button class="rest-plus5-button" onclick="plus5_button()">+5m</button>
+                    </div>
+
+                </span>
+            </div>
+            
         </div>
+        
 
 
     </main>
