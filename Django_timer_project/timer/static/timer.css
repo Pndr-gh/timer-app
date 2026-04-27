@@ -24,9 +24,11 @@ button:hover {
 
 .selector-div{
     display: flex;
+    flex-direction: column;
+    width: 45%;
     aspect-ratio: 1 / 2;
     border-radius: 10px;
-    justify-content: center;
+    justify-content: space-around;
     background-color: cadetblue;
     align-items: center;
     position: relative;
@@ -35,15 +37,31 @@ button:hover {
 
 @media (min-width: 600px){
     .selector-div{
-        width: 30%;
+        flex-direction: row;
+        width: 60%;
+        aspect-ratio: 2 / 1;
     }
 }
 @media (min-width: 1240px){
     .selector-div{
-        aspect-ratio: 2 / 1;
 
-        width: 60%;
+        width: 40%;
     }
+}
+
+.selector-outer-holder {
+    display: flex;
+    flex-direction: column;
+}
+
+.selector-name {
+    display: flex;
+    justify-content: center;
+}
+
+.selector-holder {
+    display: flex;
+    justify-content: space-around;
 }
 
 .exit-button {
@@ -70,6 +88,10 @@ button:hover {
     align-items: center;
 }
 
+/* .timer-selector-div {
+    display: flex;
+    
+} */
 
 
 .time-selector-div div{

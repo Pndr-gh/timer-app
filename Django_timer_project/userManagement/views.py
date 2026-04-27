@@ -1,12 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
+from django.contrib.auth import login
 from django.http import HttpResponse
 
 def signUp_view(request):
     y = range(4)
-    navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Account']
+    navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Signup']
     if request.method == 'GET':
         form = UserCreationForm()
         return render(request, 'register.html', {'form': form, 'y': y, 'navbar': navbar})
@@ -19,6 +20,19 @@ def signUp_view(request):
 
             return render(request, 'register.html', {'form': form, 'y': y, 'navbar': navbar, 'erorrs': formErrors})
 
-        else:
-            form.save()
-            return HttpResponse(f"user {form.cleaned_data['username']} created")
+        else:       
+
+            user = form.save()
+            login(request, user)
+            return redirect('Timer')
+        
+def first_page_view(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    else:
+        return redirect("Timer")
+
+def login_view(request):  
+    y = range(4)
+    navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Account']
+    return render(request, 'login.html', {'y': y, 'navbar': navbar})

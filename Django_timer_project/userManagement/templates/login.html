@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href= "{% static 'login.css' %}">
+{% endblock css %}
+
+{% block main %}
+
+
+<form method="post" class="login-form"> {% csrf_token %}
+    <main class="login-main-flex">
+
+        <div class="login-title-div">
+            <span class="login-title-text">Login</span>
+        </div>
+
+        {{ form.non_field_errors }}
+        <div class="login-username-div">
+            <!-- <span class="username-title">Username</span> -->
+             <label for="{{ form.username.id_for_label }}">Username:</label>
+            {{ form.username }}
+            {{ form.username.errors }}
+        </div>
+        <div class="login-password-div">
+             <label for="{{ form.password.id_for_label }}">Password:</label>
+            {{ form.password }}
+            {{ form.password.errors }}
+        </div>
+        <div class="login-button-div">
+            <button class="login-button" type="submit">Login</button>
+            <button class="guest-button">Guest</button>
+        </div>
+        <div class="login-createNewAccount-div">
+            <a href="{% url 'Signup' %}">Create a new accout</a>
+        </div>
+        
+    </main>
+
+</form>
+
+
+{% block js %}
+    <script src= "{% static 'timer.js' %}" ></script>
+{% endblock js %}
+
+
+{% endblock main %}

@@ -15,7 +15,7 @@ function format_time(timeInsecod){
 }
 
 function handle_selector_exit() {
-    let selectorHolder = document.getElementById('selector-holder');
+    let selectorHolder = document.getElementById('selector-overlay');
     selectorHolder.classList.toggle('editing-view');
 }
 
@@ -127,37 +127,37 @@ function upper_arrow(selector, id){
 
 }
 
-function lower_arrow(selector){
+function lower_arrow(selector, id){
     if (selector == 0){
-        let container = document.getElementById('hour').innerHTML;
+        let container = document.getElementById('hour' + id).innerHTML;
         if (container != 0){
             container--;
-            document.getElementById('hour').innerHTML = container;
+            document.getElementById('hour' + id).innerHTML = container;
         }
         else{
-            document.getElementById('hour').innerHTML = 60;
+            document.getElementById('hour' + id).innerHTML = 60;
         }
 
             
     }
     else if (selector == 1){
-        let container = document.getElementById('minute').innerHTML;
+        let container = document.getElementById('minute' + id).innerHTML;
         if (container != 0){
             container--;
-            document.getElementById('minute').innerHTML = container;
+            document.getElementById('minute' + id).innerHTML = container;
             }
         else{
-            document.getElementById('minute').innerHTML = 60;
+            document.getElementById('minute' + id).innerHTML = 60;
         }
     }
     else if(selector == 2){
-        let container = document.getElementById('second').innerHTML;
+        let container = document.getElementById('second' + id).innerHTML;
         if (container != 0){
             container--;
-            document.getElementById('second').innerHTML = container;
+            document.getElementById('second' + id).innerHTML = container;
             }
         else{
-            document.getElementById('second').innerHTML = 60;
+            document.getElementById('second' + id).innerHTML = 60;
         }
     }
 

@@ -14,28 +14,33 @@
         <div class="selector-overlay" id= "selector-overlay">
             <div class= "selector-div" id= 'selector-div'>
                 {% for x in y%}
-                    <div class="selector-holder" id="selector-holder">
-                        <button class="exit-button" onclick="handle_selector_exit()">X</button>
+                    <div class="selector-outer-holder">
+                        <div class="selector-name">{{ x }}</div>
+                        <div class="selector-holder" id="selector-holder">
+                            <button class="exit-button" onclick="handle_selector_exit()">X</button>
 
-                        <div class= "time-selector-div">
-                            <button class= "up-button" id= "hour-up-button" onclick= "upper_arrow(0, {{x}})">↑</button>
-                            <div id= "hour{{x}}" class= "time-selector-number">0</div>
-                            <button class= "down-button" id= "hour-down-button" onclick= "lower_arrow(0, {{x}})">↓</button>
+                            <div class= "time-selector-div">
+                                <button class= "up-button" id= "hour-up-button" onclick= "upper_arrow(0, {{ forforloop.counter0 }})">↑</button>
+                                <div id= "hour{{ forloop.counter0 }}" class= "time-selector-number">0</div>
+                                <button class= "down-button" id= "hour-down-button" onclick= "lower_arrow(0, {{ forloop.counter0 }})">↓</button>
+                            </div>
+                            <div class= "two-dots">:</div>
+                            <div class= "time-selector-div">
+                                <button class= "up-button" id= "minute-up-button" onclick= "upper_arrow(1, {{ forloop.counter0 }})">↑</button>
+                                <div id= "minute{{ forloop.counter0 }}" class= "time-selector-number">0</div>
+                                <button class= "down-button" id= "minute-down-button" onclick= "lower_arrow(1, {{ forloop.counter0 }})">↓</button>
+                            </div>
+                            <div class= "two-dots">:</div>
+                            <div class= "time-selector-div">
+                                <button class= "up-button" id= "second-up-button" onclick= "upper_arrow(2, {{ forloop.counter0 }})">↑</button>
+                                <div id= "second{{ forloop.counter0 }}" class= "time-selector-number">0</div>
+                                <button class= "down-button" id= "second-down-button" onclick= "lower_arrow(2, {{ forloop.counter0 }})">↓</button>                
+                            </div>
+                            <button id= 'save-button' onclick= "save_time({{ forloop.counter0 }})">Save</button>                    
                         </div>
-                        <div class= "two-dots">:</div>
-                        <div class= "time-selector-div">
-                            <button class= "up-button" id= "minute-up-button" onclick= "upper_arrow(1, {{x}})">↑</button>
-                            <div id= "minute{{x}}" class= "time-selector-number">0</div>
-                            <button class= "down-button" id= "minute-down-button" onclick= "lower_arrow(1, {{x}})">↓</button>
-                        </div>
-                        <div class= "two-dots">:</div>
-                        <div class= "time-selector-div">
-                            <button class= "up-button" id= "second-up-button" onclick= "upper_arrow(2, {{x}})">↑</button>
-                            <div id= "second{{x}}" class= "time-selector-number">0</div>
-                            <button class= "down-button" id= "second-down-button" onclick= "lower_arrow(2, {{x}})">↓</button>                
-                        </div>
-                        <button id= 'save-button' onclick= "save_time({{x}})">Save</button>                    
+                        <div class="selector-void"></div>                        
                     </div>
+
                 {% endfor %}
             </div>
         </div>

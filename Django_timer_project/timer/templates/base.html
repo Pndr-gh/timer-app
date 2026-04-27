@@ -11,12 +11,33 @@
 </head>
 <body>
     <nav class="navbar" id= "navbar">
-        <div class="hamburger"><button  onclick= "handle_hamburger()"><img src="{% static "hamburger.png" %}" alt=""></button></div>
-        {% for x in navbar %}
-        <a href="{% url x %}">
-            <div class="nav-element" id= "nav-element-{{x}}">{{x}}</div>
-        </a>
-        {% endfor %}
+        <div class="hamburger"><button onclick= "handle_hamburger()"><img src="{% static "hamburger.png" %}" alt=""></button></div>
+        <div class="userstate-div">
+            {% if user.is_authenticated %}
+                <button class="username-button">
+                    {{ user.username }}
+                </button>
+                <form action="{% url 'logout' %}" method="post" class="logout-form"> {% csrf_token %}
+                    <button type="submit" class="logout-button">Logout</button>
+                </form>
+            {% else %}
+                <span class="guest-span">Guest</span>
+                <a href="{% url 'login' %}" class="login-button">Login</a>
+            {% endif %}
+        </div>
+
+            
+
+
+        </span>
+
+        <div class="inner-navbar-holder">
+            {% for x in navbar %}
+            <a href="{% url x %}">
+                <div class="nav-element" id= "nav-element-{{x}}">{{x}}</div>
+            </a>
+            {% endfor %}
+        </div>
     </nav>
 
     <!-- <div class="h1-texts-div">

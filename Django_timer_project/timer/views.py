@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 def timer_view(request):
-    y = range(2)
-    navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Account']
+    y = ['session', 'pomodoro']
+    navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Signup']
     return render(request, "timer.html", {'y': y, 'navbar': navbar})
 
 def task_view(request):

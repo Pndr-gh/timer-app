@@ -1,0 +1,35 @@
+.login-main-flex {
+    display: flex;
+    flex-direction: column;
+    background-color: aqua;
+    width: 50%;
+    margin: 3rem auto 0px auto;
+    gap: 1rem;
+}
+
+.login-title-div {
+    margin-top: 1rem;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.login-username-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-password-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-button-div {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.login-createNewAccount-div {
+    display: flex;
+    justify-content: center;
+}

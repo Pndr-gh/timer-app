@@ -12,8 +12,8 @@ body{
 html{
     background-color: grey;
     margin: 0 5% 0 5%;
-    border-left: 2px solid rgb(151, 151, 151);
-    border-right: 2px solid rgb(151, 151, 151);
+    /* border-left: 2px solid rgb(151, 151, 151);
+    border-right: 2px solid rgb(151, 151, 151); */
 }
 @media (min-width: 600px){
     html {
@@ -26,19 +26,56 @@ html{
     }
 }
 
-.navbar{
+.inner-navbar-holder {
+    margin-right: 2rem;
     display: flex;
     flex-direction: row;
-    height: 5rem;
-    justify-content: space-evenly;
-    align-items: center;
-    background-color: antiquewhite;
+}
 
+.navbar{
+    display: flex;
+    height: 5rem;
+    justify-content: space-between;
+    align-items: center;
+    background-color: gray;
+    box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.3);
+    
+
+}
+
+.userstate-div {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.userstate-div button {
+    font-weight: 600;
+    border-radius: 10%;
+    padding: 0.8rem;
+    color: white;
+    background-color: gray;
+
+}
+.username-button {
+    box-shadow: 0px 0px 10px 0px rgba(153, 255, 175, 0.3);
+    border: 1px solid rgb(156, 239, 171);
+
+}
+
+.logout-button {
+    border: 1px solid rgb(239, 156, 156);
+    box-shadow: 0px 0px 10px 0px rgba(255, 153, 153, 0.3);
+
+}
+
+.guest-span {
+    color: white;
 }
 
 .navbar a {
     text-decoration: none;
-    color: black;
 }
 
 .navbar.mobile-view{
@@ -50,7 +87,13 @@ html{
     left: 5%;
     border-radius: 10px;
     padding-bottom: 1rem;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.3);
+}
+
+.navbar.navbar.mobile-view .inner-navbar-holder {
+    display: flex;
+    flex-direction: column;
+    margin-right: 0px;
 }
 
 .navbar.mobile-view .nav-element{
@@ -61,13 +104,15 @@ html{
 .nav-element{
     padding: 1rem 1rem 1rem 1rem;
     /* border-radius: 30%; */
+    color: white;
     display: none;
-    font-size: 1.2rem;
-
+    font-size: 1rem;
+    font-weight: 600;
+    transition: 0.2s ease;
 }
 
 .nav-element:hover{
-    background-color: rgba(235, 220, 201, 0.918);
+    background-color: rgba(119, 119, 119, 0.89);
 
 }
 
@@ -88,16 +133,16 @@ html{
     padding: 1rem;
     border: 0px;
     border-radius: 25%;
-    background-color: antiquewhite;
+    background-color: gray;
 }
 
 .hamburger button:hover{
-    background-color: rgba(240, 224, 204, 0.829);
+    background-color: rgba(143, 143, 143, 0.849);
     transition: 0.3s ease;
 }
 
 .hamburger button:active{
-    background-color: rgba(224, 210, 193, 0.733);
+    background-color: rgba(163, 163, 163, 0.849);
     transform: scale(1.03);
 }
 
