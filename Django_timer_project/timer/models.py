@@ -15,3 +15,7 @@ class PomodoroCycle(models.Model):
     end_time = models.DateTimeField(null=True, blank=True)
     minute_amount = models.PositiveIntegerField()
 
+class PersonalPrefrences(models.Model):
+    user = models.OneToOneField(User, on_delete= models.CASCADE)
+    session_timeInSecond = models.PositiveIntegerField(null= True, blank= True, default= 5100)
+    cycle_timeInSecond = models.PositiveIntegerField(null= True, blank= True, default= 1500)

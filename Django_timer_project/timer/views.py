@@ -9,9 +9,24 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 
 def timer_view(request):
+    
     y = ['session', 'pomodoro']
     navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Signup']
-    return render(request, "timer.html", {'y': y, 'navbar': navbar})
+
+    if request.user.is_authenticated:
+        prefs, created = PersonalPrefrences.objects.get_or_create(user=request.user)
+
+        preferred_session_time = prefs.session_timeInSecond
+        preferred_cycle_time = prefs.cycle_timeInSecond
+
+    else:
+
+        preferred_session_time = 5100
+        preferred_cycle_time = 1500
+
+    return render(request, "timer.html", {'y': y, 'navbar': navbar,
+                                           "preferred_sessionTime": preferred_session_time,
+                                             "preferred_cycleTime": preferred_cycle_time})
 
 def task_view(request):
     return HttpResponse('task view')
@@ -99,3 +114,23 @@ def save_session_view(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status= 400)
     else:
         return JsonResponse({'error': 'Invalid request'}, status= 400)
+    
+@login_required
+def save_time_prefrences(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            session_time = data.get('session_time')
+            cycle_time = data.get('cycle_time')
+
+            prefrences_model = PersonalPrefrences.objects.get(user= request.user)
+            prefrences_model.session_timeInSecond= session_time
+            prefrences_model.cycle_timeInSecond= cycle_time
+            prefrences_model.save()
+
+            return JsonResponse({'status': 'success', 'message': 'saved time prefrences'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status= 400)
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status= 400)
+    

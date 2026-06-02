@@ -23,11 +23,6 @@
                             <div class= "time-selector-div">
                                 <button class= "up-button" id= "hour-up-button" onclick= "upper_arrow(0, {{ forloop.counter0 }})">↑</button>
                                 <div id= "hour{{ forloop.counter0 }}" class= "time-selector-number">
-                                    {% if x == "session" %}
-                                        1
-                                    {% else %}
-                                        0
-                                    {% endif %}
                                 </div>
                                 <button class= "down-button" id= "hour-down-button" onclick= "lower_arrow(0, {{ forloop.counter0 }})">↓</button>
                             </div>
@@ -43,7 +38,7 @@
                                 <div id= "second{{ forloop.counter0 }}" class= "time-selector-number">0</div>
                                 <button class= "down-button" id= "second-down-button" onclick= "lower_arrow(2, {{ forloop.counter0 }})">↓</button>                
                             </div>
-                            <button id= 'save-button' onclick= "save_time({{ forloop.counter0 }})">Save</button>                    
+                            <button id= 'save-button' onclick= "save_all_times()">Save</button>                    
                         </div>
                         <div class="selector-void"></div>                        
                     </div>
@@ -71,7 +66,7 @@
                 <button class="session-pause-button pressed-pause" id="session-pause-button" onclick="handle_session_pause()">
                     <img src="{% static "pause.png" %}" alt="">
                 </button>
-                <div class= "timer-num timer_number0"  id = "timer_number0" onclick="handle_edit()">01:25:00</div>
+                <div class= "timer-num timer_number0"  id = "timer_number0" onclick="handle_edit()"></div>
                 <button class="session-reset-button" onclick="handle_session_reset()">
                     <img src="{% static "reset2.png" %}" alt="">
                 </button>
@@ -134,4 +129,31 @@
 
 {% block js %}
     <script src= "{% static 'timer.js' %}" ></script>
+    <script>
+        const isAuthenticated =
+            {% if user.is_authenticated %}
+                true
+            {% else %}
+                false
+            {% endif %};
+        
+        timesInSeconds = {0: {{ preferred_sessionTime }}, 1: {{ preferred_cycleTime }}, 2: 300};
+        Selected_times = timesInSeconds;
+
+        {%for x in y%}
+            
+            document.getElementById("timer_number" + {{forloop.counter0}}).innerHTML =
+            format_time(Selected_times[{{forloop.counter0}}]);
+            
+            document.getElementById("hour" + {{forloop.counter0}}).innerHTML =
+            Math.floor(Selected_times[{{forloop.counter0}}] / 3600)
+
+            document.getElementById("minute" + {{forloop.counter0}}).innerHTML =
+            Math.floor(Selected_times[{{forloop.counter0}}] / 60) % 60
+
+            document.getElementById("second" + {{forloop.counter0}}).innerHTML =
+            Math.floor(Selected_times[{{forloop.counter0}}] % 60)
+            
+        {% endfor %}
+    </script>
 {% endblock js %}

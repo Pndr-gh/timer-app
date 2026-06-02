@@ -39,5 +39,6 @@ urlpatterns = [
     path('save-cycle/', save_cycles_view, name= 'save_cycle'),
     path('start-session/', start_session_view, name='start_session'),
     path('end-session/', save_session_view, name='save_session'),
+    path('save-time-prefrences/', save_time_prefrences, name='save_time_prefrences'),
 
 ]

@@ -1,13 +1,15 @@
 let timeIntervals = {};
-let timesInSeconds = {0: 5100, 1: 1500, 2: 300};
-let Selected_times = {0: 5100, 1: 1500, 2: 300 };
+let timesInSeconds;
+let Selected_times;
 let timerIdSaver;
 let warning_selector = 0;
+
 
 let currentSessionId = null;
 let currentCycleId = null;
 let isFetchingSession = false;
 let isFetchingCycle = false;
+
 
 
 function format_time(timeInsecod){
@@ -43,8 +45,43 @@ function save_time(id){
         (seconds < 10 ? "0" + seconds : seconds);
     timerNumber = document.querySelector(".timer_number" + id);
     timerNumber.innerHTML = formattedTime;
+
+
+}
+
+function save_all_times(){
+    save_time(0);
+    save_time(1);
     let selectorHolder = document.getElementById('selector-overlay');
-    selectorHolder.classList.toggle('editing-view');
+    
+    selectorHolder.classList.remove('editing-view');
+
+    if (!isAuthenticated){
+        return;
+    }
+
+    fetch("/save-time-prefrences/", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: 
+            JSON.stringify({
+                'session_time': Selected_times[0],
+                'cycle_time': Selected_times[1]
+            })
+            
+        }
+    )
+    .then(responce => responce.json())
+    .then(data => {
+        console.log("prefrences saved successfully");
+    })
+    .catch(error => {
+        console.error(error);
+    });
+    
 }
 
 function start_timer(id){
@@ -75,16 +112,20 @@ function start_timer(id){
             const timerNumber = document.querySelector(".timer_number" + id);
             timerNumber.innerHTML = "Time's up!";
             if (id == 0){
-                sendDataToDjango(Math.floor(Selected_times[0] / 60));
+                timesInSeconds[1] = 0;
+                sendEndSessionDataToDjango();
+                handle_session_pause();
             }
 
             if (id == 1){
                 handle_pomo_pause();
-                sendEndSessionDataToDjango();
+                sendDataToDjango(Math.floor(Selected_times[0] / 60));
+
             }
 
             else if (id == 2){
                 rest_skip_button();
+                start_timer(1);
             }
             
             return;
@@ -288,7 +329,10 @@ function handle_session_start(){
 }
 
 function handle_session_pause(){
-    pause_timer(1);
+    if (timesInSeconds[1] == 0){
+        rest_skip_button();
+    }
+    pause_timer(1); 
     let startButtonHolder = document.getElementById('session-start-button');
     let pauseButtonHolder = document.getElementById('session-pause-button');
 
@@ -313,8 +357,8 @@ function handle_session_reset(){
 }
 
 function rest_skip_button() {
+    
     pause_timer(2);
-    start_timer(1);
 
     let restDivHolder = document.getElementById('rest-timer-overlay-div');
     let restTimeDivHolder = document.getElementById('rest-timer-div');
@@ -348,14 +392,12 @@ function handle_session_3c() {
 
         } 
     else{
-        Selected_times[0] = 5100;
-        timesInSeconds[0] = 5100;
-
-        Selected_times[1] = 1500;
-        timesInSeconds[1] = 1500;
 
         handle_edit_number_change(5100, 0);
         handle_edit_number_change(1500, 1);
+
+        save_all_times();
+
         warning_selector = 0;
     }
         
@@ -379,14 +421,13 @@ function handle_session_4c(){
 
         } 
     else{
-        Selected_times[0] = 6900;
-        timesInSeconds[0] = 6900;
 
-        Selected_times[1] = 1500;
-        timesInSeconds[1] = 1500;
 
         handle_edit_number_change(6900, 0);
         handle_edit_number_change(1500, 1);
+
+        save_all_times();
+
         warning_selector = 0;
     }
 
@@ -415,24 +456,37 @@ function handle_edit_number_change(seconds, selector){
 // backend-function
 
 function startCycleInDjango(){
-    if (currentCycleId === null){
 
-        fetch('/start-cycle/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.cycle_id){
-                currentCycleId = data.cycle_id;
-                console.log("cycle started with ID:", currentCycleId);
-            }
-
-        })
+    if (!isAuthenticated){
+        return;
     }
+
+    if (currentCycleId !== null || isFetchingCycle){
+        return;
+    }
+
+    isFetchingCycle = true;
+
+    fetch('/start-cycle/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.cycle_id){
+            currentCycleId = data.cycle_id;
+            console.log("cycle started with ID:", currentCycleId);
+        }
+    })
+    .catch(error => {
+        console.error(error);
+    })
+    .finally(() => {
+        isFetchingCycle = false;
+    });
 }
 
 function sendDataToDjango(totalMinute){
@@ -467,31 +521,43 @@ function sendDataToDjango(totalMinute){
 }
 
 function startNewSession() {
-    if (currentSessionId === null){
-        fetch('/start-session/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.session_id) {
-                currentSessionId = data.session_id;
-                console.log("Session started with ID:", currentSessionId);
-            }
-        })
-        .catch(error => console.error('Error starting session:', error));
+
+    if (!isAuthenticated){
+        return;
     }
 
+    if (currentSessionId !== null || isFetchingSession){
+        return;
+    }
 
+    isFetchingSession = true;
+
+    fetch('/start-session/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.session_id){
+            currentSessionId = data.session_id;
+            console.log("Session started with ID:", currentSessionId);
+        }
+    })
+    .catch(error => {
+        console.error(error);
+    })
+    .finally(() => {
+        isFetchingSession = false;
+    });
 }
 
 function sendEndSessionDataToDjango() {
     
     const sessionData = {
-        'minute_amount': Selected_times[0],
+        'minute_amount': Math.floor(Selected_times[0] / 60),
         'session_id': currentSessionId
     }
 
