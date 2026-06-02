@@ -2,6 +2,14 @@ let timeIntervals = {};
 let timesInSeconds = {0: 5100, 1: 1500, 2: 300};
 let Selected_times = {0: 5100, 1: 1500, 2: 300 };
 let timerIdSaver;
+let warning_selector = 0;
+
+let currentSessionId = null;
+let currentCycleId = null;
+let isFetchingSession = false;
+let isFetchingCycle = false;
+
+
 function format_time(timeInsecod){
 
         const seconds = timeInsecod % 60;
@@ -47,14 +55,32 @@ function start_timer(id){
 
 
     timeIntervals[id] = setInterval(() => {
+
+        if (id == 0 && currentSessionId === null){
+            startNewSession();
+        }
+        else if(id == 1 && currentCycleId === null){
+            startCycleInDjango();
+        }
+
         timesInSeconds[id]--;
         let timeInSeconds = timesInSeconds[id];
+
+
+
+
+
         if (timeInSeconds <= 0){
             clearInterval(timeIntervals[id]);
             const timerNumber = document.querySelector(".timer_number" + id);
             timerNumber.innerHTML = "Time's up!";
+            if (id == 0){
+                sendDataToDjango(Math.floor(Selected_times[0] / 60));
+            }
+
             if (id == 1){
                 handle_pomo_pause();
+                sendEndSessionDataToDjango();
             }
 
             else if (id == 2){
@@ -73,6 +99,8 @@ function start_timer(id){
                 (seconds < 10 ? "0" + seconds : seconds);
         timerNumber = document.querySelector(".timer_number" + id);
         timerNumber.innerHTML = formattedTime;
+
+
 
     }, 1000);
 }
@@ -173,6 +201,8 @@ function handle_edit(){
     selectorHolder.classList.toggle('editing-view');
 }
 
+
+
 function handle_pomo_pause(){
     let SessionStartButton = document.getElementById('session-start-button');
     if (SessionStartButton.classList.contains('pressed-pause')) {
@@ -200,16 +230,16 @@ function handle_pomo_pause(){
 function handle_pomo_reset(id) {
     if (id == 0){
         handle_session_pause();
-        if ((timesInSeconds[1] != 0) && (timesInSeconds[1] != Selected_times[1])){
+       if ((timesInSeconds[1] != 0) && (timesInSeconds[1] != Selected_times[1])){
             let WarningHolder = document.getElementById("pause-warning-background");
             let WarningParagraph = document.getElementById("warning-p");
             let lostTime = Selected_times[1] - timesInSeconds[1];
-
+ 
             WarningHolder.classList.toggle('warning-view');
             WarningParagraph.innerHTML = `You will lose  <strong>${format_time(lostTime)}</strong>  of your session progress. Are you sure you want to continue?`;
 
-    }  
-    }else if(id == 1){
+            }  
+    }else if(id == 1 && warning_selector == 0){
 
         let WarningHolder = document.getElementById("pause-warning-background");
         WarningHolder.classList.toggle('warning-view');
@@ -219,10 +249,28 @@ function handle_pomo_reset(id) {
         reset_timer(1);
         handle_session_start();
 
-    }else {
+    }else if(id == 1 && warning_selector == 1){
         let WarningHolder = document.getElementById("pause-warning-background");
         WarningHolder.classList.toggle('warning-view');
-        handle_session_start()
+
+        timesInSeconds[1] = Selected_times[1];
+        handle_session_3c();
+        
+    }
+
+    else if(id == 1 && warning_selector == 2){
+        let WarningHolder = document.getElementById("pause-warning-background");
+        WarningHolder.classList.toggle('warning-view');
+
+        timesInSeconds[1] = Selected_times[1];
+        handle_session_4c();
+                
+    }
+
+    else {
+        let WarningHolder = document.getElementById("pause-warning-background");
+        WarningHolder.classList.toggle('warning-view');
+        handle_session_start();
     }
   
 }
@@ -277,4 +325,193 @@ function rest_skip_button() {
 
 function plus5_button() {
     timesInSeconds[2] += 300;
+}
+
+
+// session functions
+
+function handle_session_3c() {
+
+    let startButtonHolder = document.getElementById('session-start-button');
+    if (startButtonHolder.classList.contains('pressed-start')){
+        handle_session_pause();
+    }
+
+    if ((timesInSeconds[1] != 0) && (timesInSeconds[1] != Selected_times[1])){
+        let WarningHolder = document.getElementById("pause-warning-background");
+        let WarningParagraph = document.getElementById("warning-p");
+        let lostTime = Selected_times[1] - timesInSeconds[1];
+        warning_selector = 1;
+
+        WarningHolder.classList.toggle('warning-view');
+        WarningParagraph.innerHTML = `You will lose  <strong>${format_time(lostTime)}</strong>  of your session progress. Are you sure you want to continue?`;
+
+        } 
+    else{
+        Selected_times[0] = 5100;
+        timesInSeconds[0] = 5100;
+
+        Selected_times[1] = 1500;
+        timesInSeconds[1] = 1500;
+
+        handle_edit_number_change(5100, 0);
+        handle_edit_number_change(1500, 1);
+        warning_selector = 0;
+    }
+        
+
+}
+
+function handle_session_4c(){
+    let startButtonHolder = document.getElementById('session-start-button');
+    if (startButtonHolder.classList.contains('pressed-start')){
+        handle_session_pause();
+    }
+
+    if ((timesInSeconds[1] != 0) && (timesInSeconds[1] != Selected_times[1])){
+        let WarningHolder = document.getElementById("pause-warning-background");
+        let WarningParagraph = document.getElementById("warning-p");
+        let lostTime = Selected_times[1] - timesInSeconds[1];
+        warning_selector = 2;
+
+        WarningHolder.classList.toggle('warning-view');
+        WarningParagraph.innerHTML = `You will lose  <strong>${format_time(lostTime)}</strong>  of your session progress. Are you sure you want to continue?`;
+
+        } 
+    else{
+        Selected_times[0] = 6900;
+        timesInSeconds[0] = 6900;
+
+        Selected_times[1] = 1500;
+        timesInSeconds[1] = 1500;
+
+        handle_edit_number_change(6900, 0);
+        handle_edit_number_change(1500, 1);
+        warning_selector = 0;
+    }
+
+
+}
+
+// edit functions
+
+function handle_edit_number_change(seconds, selector){
+    let formatedSeconds = seconds % 60;
+    let formatedMinutes = Math.floor(seconds / 60) % 60;
+    let formatedHours = Math.floor(seconds / 3600);
+
+    let editHourHolder = document.getElementById('hour' + selector);
+    let editMinuteHolder = document.getElementById('minute' + selector);
+    let editSecondHolder = document.getElementById('second' + selector);
+
+    let mainTimerHolder = document.getElementById('timer_number' + selector);
+    mainTimerHolder.innerHTML = format_time(seconds);
+
+    editHourHolder.innerHTML = formatedHours;
+    editMinuteHolder.innerHTML = formatedMinutes;
+    editSecondHolder.innerHTML = formatedSeconds;
+}
+
+// backend-function
+
+function startCycleInDjango(){
+    if (currentCycleId === null){
+
+        fetch('/start-cycle/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.cycle_id){
+                currentCycleId = data.cycle_id;
+                console.log("cycle started with ID:", currentCycleId);
+            }
+
+        })
+    }
+}
+
+function sendDataToDjango(totalMinute){
+
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    const cycleData = {
+        minute_amount: totalMinute,
+        session_id: currentSessionId,
+        cycle_id: currentCycleId
+    };
+
+
+    fetch('/save-cycle/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify(cycleData)
+    })
+    .then(responce => responce.json())
+    .then(data => {
+        console.log("Cycle saved successfully", data);
+    })
+    .catch(error => {
+        console.error("Error saving cycle:", error);
+    });
+
+    currentCycleId = null;
+
+}
+
+function startNewSession() {
+    if (currentSessionId === null){
+        fetch('/start-session/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.session_id) {
+                currentSessionId = data.session_id;
+                console.log("Session started with ID:", currentSessionId);
+            }
+        })
+        .catch(error => console.error('Error starting session:', error));
+    }
+
+
+}
+
+function sendEndSessionDataToDjango() {
+    
+    const sessionData = {
+        'minute_amount': Selected_times[0],
+        'session_id': currentSessionId
+    }
+
+    fetch('/end-session/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: JSON.stringify(sessionData)
+
+    })
+    .then(responce => responce.json())
+    .then(data => {
+        console.log("session saved successfully", data)
+    })
+    .catch(error => {
+        console.log("Error saving session", error)
+    })
+
+    currentSessionId = null;
+
 }

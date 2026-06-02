@@ -9,6 +9,7 @@
 
 
 {% block main %}
+    {% csrf_token %}
     <main id= "main-element">
 
         <div class="selector-overlay" id= "selector-overlay">
@@ -20,14 +21,20 @@
                             <button class="exit-button" onclick="handle_selector_exit()">X</button>
 
                             <div class= "time-selector-div">
-                                <button class= "up-button" id= "hour-up-button" onclick= "upper_arrow(0, {{ forforloop.counter0 }})">↑</button>
-                                <div id= "hour{{ forloop.counter0 }}" class= "time-selector-number">0</div>
+                                <button class= "up-button" id= "hour-up-button" onclick= "upper_arrow(0, {{ forloop.counter0 }})">↑</button>
+                                <div id= "hour{{ forloop.counter0 }}" class= "time-selector-number">
+                                    {% if x == "session" %}
+                                        1
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </div>
                                 <button class= "down-button" id= "hour-down-button" onclick= "lower_arrow(0, {{ forloop.counter0 }})">↓</button>
                             </div>
                             <div class= "two-dots">:</div>
                             <div class= "time-selector-div">
                                 <button class= "up-button" id= "minute-up-button" onclick= "upper_arrow(1, {{ forloop.counter0 }})">↑</button>
-                                <div id= "minute{{ forloop.counter0 }}" class= "time-selector-number">0</div>
+                                <div id= "minute{{ forloop.counter0 }}" class= "time-selector-number">25</div>
                                 <button class= "down-button" id= "minute-down-button" onclick= "lower_arrow(1, {{ forloop.counter0 }})">↓</button>
                             </div>
                             <div class= "two-dots">:</div>
@@ -73,12 +80,16 @@
 
 
         </div>
-
-        <div class="session-timer-buttons">
-            <span style="font-size: 1.4rem;
-                        ">Session</span>
+        <div class="session-under-bar">
+            <span>Session</span>
+            <div class="session-timer-buttons">
+                <button class="c3-button" onclick= "handle_session_3c()">3C</button>
+                <button class="c4-button" onclick= "handle_session_4c()">4C</button>
+                <button class="cc-button" onclick= "handle_edit()">Custom</button>
+            </div>
             
         </div>
+
 
 
         <div class= "timer-grid">

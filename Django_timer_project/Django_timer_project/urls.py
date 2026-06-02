@@ -34,4 +34,10 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name = "login.html", extra_context = {'y': y, 'navbar': navbar}), name = 'login'),
     path('logout/', auth_views.LogoutView.as_view(next_page = 'Timer' ), name= "logout"),
     path('', first_page_view, name='First page'),
+
+    path('start-cycle/', start_cycle_view, name= 'start_cycle'),
+    path('save-cycle/', save_cycles_view, name= 'save_cycle'),
+    path('start-session/', start_session_view, name='start_session'),
+    path('end-session/', save_session_view, name='save_session'),
+
 ]
