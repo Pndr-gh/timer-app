@@ -1,0 +1,49 @@
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.upperbar-div {
+    display: flex;
+    justify-content: space-evenly;
+    height: 4rem;
+    margin-top: 2rem;
+    width: 60%;
+    gap: 1rem;
+    background-color: gray;
+    box-shadow: 0px 4px 10px 0px rgba(135, 241, 245, 0.592);
+
+}
+    
+.username-holder-span {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.change-username-button {
+    background-color: gray;
+    border: 1px solid rgb(156, 239, 171);
+    color: rgb(156, 239, 171);
+    font-size: 1.2rem;
+    font-weight: 500;
+    width: 6rem;
+    border-radius: 10%;
+    box-shadow: 0px 0px 10px 0px rgba(153, 255, 175, 0.3);
+
+}
+
+.statsPage-div {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    background-color: red;
+    height: 45rem;
+    width: 50%;
+
+}

@@ -86,9 +86,8 @@ function save_all_times(){
 
 function start_timer(id){
     clearInterval(timeIntervals[id]);
-    if (timesInSeconds[id] === undefined){
-        timesInSeconds[id] = 0;
-    }
+
+
 
 
     timeIntervals[id] = setInterval(() => {
@@ -120,6 +119,8 @@ function start_timer(id){
             if (id == 1){
                 handle_pomo_pause();
                 sendDataToDjango(Math.floor(Selected_times[0] / 60));
+                timerNumber.innerHTML = format_time(Selected_times(1));
+
 
             }
 
@@ -317,6 +318,9 @@ function handle_pomo_reset(id) {
 }
 
 function handle_session_start(){
+    timesInSeconds[0] = Selected_times[0];
+    timesInSeconds[1] = Selected_times[1];
+    timesInSeconds[2] = Selected_times[2];
     start_timer(0);
     let startButtonHolder = document.getElementById('session-start-button');
     let pauseButtonHolder = document.getElementById('session-pause-button');
@@ -359,6 +363,7 @@ function handle_session_reset(){
 function rest_skip_button() {
     
     pause_timer(2);
+    start_timer(1);
 
     let restDivHolder = document.getElementById('rest-timer-overlay-div');
     let restTimeDivHolder = document.getElementById('rest-timer-div');
@@ -560,6 +565,8 @@ function sendEndSessionDataToDjango() {
         'minute_amount': Math.floor(Selected_times[0] / 60),
         'session_id': currentSessionId
     }
+
+    console.log(sessionData.minute_amount)
 
     fetch('/end-session/', {
         method: 'POST',

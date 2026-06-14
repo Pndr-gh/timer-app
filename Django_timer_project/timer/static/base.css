@@ -52,6 +52,7 @@ html{
 
 .userstate-div button {
     font-weight: 600;
+    font-size: 1rem;
     border-radius: 10%;
     padding: 0.8rem;
     color: white;
@@ -61,6 +62,13 @@ html{
 .username-button {
     box-shadow: 0px 0px 10px 0px rgba(153, 255, 175, 0.3);
     border: 1px solid rgb(156, 239, 171);
+    font-weight: 500;
+    font-size: 1rem;
+    height: 90%;
+    border-radius: 10%;
+    padding: 0.8rem;
+    color: white;
+    background-color: gray;
 
 }
 

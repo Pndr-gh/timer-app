@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
+{% endblock css %}
+
+{% block main %}
+
+<main>
+    <div class="upperbar-div">
+        <span class="username-holder-span">Username : <span style="color: aqua;">{{ user.username }}</span></span>
+        <button class="change-username-button">Change</button>
+
+    </div>
+
+
+
+    <div class="statsPage-div">
+        <span>total cycles: {{ cycle_amount }}</span>
+        <span>total sessions: {{ all_session }}</span>
+        <span>total minutes focused: {{ all_minute }}</span>
+    </div>
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% block js %}
+
+{% endblock js %}
+
+{% endblock main %}

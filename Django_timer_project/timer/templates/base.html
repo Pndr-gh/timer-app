@@ -14,9 +14,10 @@
         <div class="hamburger"><button onclick= "handle_hamburger()"><img src="{% static "hamburger.png" %}" alt=""></button></div>
         <div class="userstate-div">
             {% if user.is_authenticated %}
-                <button class="username-button">
+                <a class="username-button" href="{% url 'profile' %}">
                     {{ user.username }}
-                </button>
+                </a>
+
                 <form action="{% url 'logout' %}" method="post" class="logout-form"> {% csrf_token %}
                     <button type="submit" class="logout-button">Logout</button>
                 </form>

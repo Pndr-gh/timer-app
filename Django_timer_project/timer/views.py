@@ -103,6 +103,7 @@ def save_session_view(request):
             data = json.loads(request.body)
             session_id = data.get('session_id')
             minutes = data.get('minute_amount')
+            print(minutes)
 
             current_session = SessionTimer.objects.get(user= request.user, id= session_id)
             current_session.minute_amount = minutes

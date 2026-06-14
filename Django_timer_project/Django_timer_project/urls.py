@@ -31,6 +31,7 @@ urlpatterns = [
     path('task/', task_view, name="Tasks"),
     path('calender/', calender_view, name="Calender"),
     path('long-term-goals/', goal_view, name="Long term goals"),
+    path('profile/', profile_view, name="profile"),
     path('login/', auth_views.LoginView.as_view(template_name = "login.html", extra_context = {'y': y, 'navbar': navbar}), name = 'login'),
     path('logout/', auth_views.LogoutView.as_view(next_page = 'Timer' ), name= "logout"),
     path('', first_page_view, name='First page'),

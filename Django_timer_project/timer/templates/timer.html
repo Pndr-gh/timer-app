@@ -138,10 +138,11 @@
             {% endif %};
         
         timesInSeconds = {0: {{ preferred_sessionTime }}, 1: {{ preferred_cycleTime }}, 2: 300};
-        Selected_times = timesInSeconds;
-
+        Selected_times = JSON.parse(JSON.stringify(timesInSeconds));
         {%for x in y%}
-            
+
+        
+        
             document.getElementById("timer_number" + {{forloop.counter0}}).innerHTML =
             format_time(Selected_times[{{forloop.counter0}}]);
             

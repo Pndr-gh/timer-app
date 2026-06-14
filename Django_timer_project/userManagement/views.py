@@ -2,9 +2,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from timer.models import *
 
 from django.contrib.auth import login
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 def signUp_view(request):
     y = range(4)
@@ -35,5 +37,19 @@ def first_page_view(request):
 
 def login_view(request):  
     y = range(4)
-    navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Account']
+    navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Signup']
     return render(request, 'login.html', {'y': y, 'navbar': navbar})
+
+@login_required
+def profile_view(request):
+    y = range(4)
+    sessionObjects = SessionTimer.objects.all()
+    cycle_amount = 0
+    all_minute = 0
+    all_session = 0
+    for x in range(len(sessionObjects)):
+        cycle_amount += sessionObjects[x].pomodoro_cycles
+        all_minute += sessionObjects[x].minute_amount
+        all_session += 1
+    navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Signup']
+    return render(request, 'profile.html', {'y': y, 'navbar': navbar, 'cycle_amount': cycle_amount, 'all_minute': all_minute, 'all_session': all_session})
