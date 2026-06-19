@@ -19,25 +19,33 @@
                         <div class="selector-name">{{ x }}</div>
                         <div class="selector-holder" id="selector-holder">
                             <button class="exit-button" onclick="handle_selector_exit()">X</button>
+                            
 
                             <div class= "time-selector-div">
-                                <button class= "up-button" id= "hour-up-button" onclick= "upper_arrow(0, {{ forloop.counter0 }})">↑</button>
-                                <div id= "hour{{ forloop.counter0 }}" class= "time-selector-number">
-                                </div>
-                                <button class= "down-button" id= "hour-down-button" onclick= "lower_arrow(0, {{ forloop.counter0 }})">↓</button>
+                                <button class= "up-button" id= "hour-up-button" onclick= "upper_arrow(0, {{ forloop.counter0 }})">^</button>
+                                <input type="number" id="hour{{ forloop.counter0 }}" 
+                                    class="time-selector-input" min="0" max="99">
+                                <button class= "down-button" id= "hour-down-button" onclick= "lower_arrow(0, {{ forloop.counter0 }})">⌄</button>
                             </div>
+
+
                             <div class= "two-dots">:</div>
                             <div class= "time-selector-div">
-                                <button class= "up-button" id= "minute-up-button" onclick= "upper_arrow(1, {{ forloop.counter0 }})">↑</button>
-                                <div id= "minute{{ forloop.counter0 }}" class= "time-selector-number">25</div>
-                                <button class= "down-button" id= "minute-down-button" onclick= "lower_arrow(1, {{ forloop.counter0 }})">↓</button>
+                                <button class= "up-button" id= "minute-up-button" onclick= "upper_arrow(1, {{ forloop.counter0 }})">^</button>
+                                <input type="number" id="minute{{ forloop.counter0 }}" 
+                                    class="time-selector-input" min="0" max="59" value="25">
+                                <button class= "down-button" id= "minute-down-button" onclick= "lower_arrow(1, {{ forloop.counter0 }})">⌄</button>
                             </div>
+
+
                             <div class= "two-dots">:</div>
                             <div class= "time-selector-div">
-                                <button class= "up-button" id= "second-up-button" onclick= "upper_arrow(2, {{ forloop.counter0 }})">↑</button>
-                                <div id= "second{{ forloop.counter0 }}" class= "time-selector-number">0</div>
-                                <button class= "down-button" id= "second-down-button" onclick= "lower_arrow(2, {{ forloop.counter0 }})">↓</button>                
+                                <button class= "up-button" id= "second-up-button" onclick= "upper_arrow(2, {{ forloop.counter0 }})">^</button>
+                                <input type="number" id="second{{ forloop.counter0 }}" 
+                                    class="time-selector-input" min="0" max="59" value="0">
+                                <button class= "down-button" id= "second-down-button" onclick= "lower_arrow(2, {{ forloop.counter0 }})">⌄</button>                
                             </div>
+
                             <button id= 'save-button' onclick= "save_all_times()">Save</button>                    
                         </div>
                         <div class="selector-void"></div>                        
@@ -93,8 +101,13 @@
                 </button>
                 <button class="btn-top-right" id= "btn-top-right" onclick= "handle_edit()"><span>Edit</span>
                 </button>
-                <button class="btn-bottom-left" onclick= "handle_session_start()"><img src="{% static "Play.png" %}" alt="">
+
+                <button class="btn-bottom-left pressed-pause" id= "pomo-play-button" onclick= "handle_session_start()"><img src="{% static "Play.png" %}" alt="">
                 </button>
+                <button class="btm-bottom-left pressed-pause" id= "pomo-pause-button" onclick= "handle_session_pause()">
+                    <img src="{% static "pause.png" %}" alt="">
+                </button>
+                
                 <button class="btn-bottom-right" onclick= "handle_pomo_pause()"><span>Rest</span>
                 </button>
 
@@ -130,6 +143,11 @@
 {% block js %}
     <script src= "{% static 'timer.js' %}" ></script>
     <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            alarmSound = new Audio('{% static "alarm.mp3" %}');
+            alarmSound.volume = 0.9;
+        });
         const isAuthenticated =
             {% if user.is_authenticated %}
                 true

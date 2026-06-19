@@ -11,6 +11,12 @@ let isFetchingSession = false;
 let isFetchingCycle = false;
 
 
+let alarmSound = null;
+
+
+
+
+
 
 function format_time(timeInsecod){
 
@@ -31,18 +37,18 @@ function handle_selector_exit() {
 
 function save_time(id){
 
-    const minutes = Number(document.getElementById(('minute' + id)).innerHTML);
-    const seconds = Number(document.getElementById(('second' + id)).innerHTML);
-    const hours = Number(document.getElementById(('hour' + id)).innerHTML);
+    const minutes = parseInt(document.getElementById(('minute' + id)).value)  || 0;
+    const seconds = parseInt(document.getElementById(('second' + id)).value) || 0;
+    const hours = parseInt(document.getElementById(('hour' + id)).value) || 0;
 
-    timesInSeconds[id] = seconds + minutes*60 + hours*3600;
-    Selected_times[id] = seconds + minutes*60 + hours*3600;
+    let totalSeconds = seconds + minutes * 60 + hours * 3600;
+    if (totalSeconds < 0) totalSeconds = 0;
 
+    timesInSeconds[id] = totalSeconds;
+    Selected_times[id] = totalSeconds;
     
-    const formattedTime = 
-        (hours < 10 ? "0" + hours : hours) + ":" +
-        (minutes < 10 ? "0" + minutes : minutes) + ":" + 
-        (seconds < 10 ? "0" + seconds : seconds);
+    const formattedTime = format_time(totalSeconds);
+
     timerNumber = document.querySelector(".timer_number" + id);
     timerNumber.innerHTML = formattedTime;
 
@@ -104,10 +110,23 @@ function start_timer(id){
 
 
 
-
-
         if (timeInSeconds <= 0){
             clearInterval(timeIntervals[id]);
+
+            if (alarmSound) {
+                alarmSound.currentTime = 0;
+                alarmSound.loop = true;
+                alarmSound.play().catch(e => console.log("Audio play prevented", e));
+                
+
+                setTimeout(() => {
+                    if (alarmSound) {
+                        alarmSound.pause();
+                        alarmSound.loop = false;
+                    }
+                }, 3500);
+    }
+
             const timerNumber = document.querySelector(".timer_number" + id);
             timerNumber.innerHTML = "Time's up!";
             if (id == 0){
@@ -119,7 +138,7 @@ function start_timer(id){
             if (id == 1){
                 handle_pomo_pause();
                 sendDataToDjango(Math.floor(Selected_times[0] / 60));
-                timerNumber.innerHTML = format_time(Selected_times(1));
+                timerNumber.innerHTML = format_time(Selected_times[1]);
 
 
             }
@@ -168,69 +187,54 @@ function pause_timer(id){
 }
 
 function upper_arrow(selector, id){
+        
+    const container = document.getElementById(
+        (selector === 0 ? 'hour' : selector === 1 ? 'minute' : 'second') + id);
+    let value = parseInt(container.value) || 0;
+
     if (selector == 0){
-        let container = document.getElementById('hour' + id).innerHTML;
-        container++;
-        document.getElementById('hour' + id).innerHTML = container;
+        
+        value = Math.min(99, value + 1);
+
+        container.value = value;
             
     }
     else if (selector == 1){
-        let container = document.getElementById('minute' + id).innerHTML;
+
         if (container != 60){
-            container++;
-            document.getElementById('minute' + id).innerHTML = container;
+            
+            value ++;
+            container.value = value;
             }
         else{
-            document.getElementById('minute' + id).innerHTML = 0;
+            container.value = 0;
         }
     }
     else if(selector == 2){
-        let container = document.getElementById('second' + id).innerHTML;
-        if (container != 60){
-            container++;
-            document.getElementById('second' + id).innerHTML = container;
+        
+        if (value != 60){
+            value++;
+            container.value = value;
             }
         else{
-            document.getElementById('second' + id).innerHTML = 0;
+            container.value = 0;
         }
     }
 
 }
 
-function lower_arrow(selector, id){
-    if (selector == 0){
-        let container = document.getElementById('hour' + id).innerHTML;
-        if (container != 0){
-            container--;
-            document.getElementById('hour' + id).innerHTML = container;
-        }
-        else{
-            document.getElementById('hour' + id).innerHTML = 60;
-        }
+function lower_arrow(selector, id) {
+    const el = document.getElementById(
+        (selector === 0 ? 'hour' : selector === 1 ? 'minute' : 'second') + id
+    );
+    let value = parseInt(el.value) || 0;
 
-            
+    if (selector === 0) { // hours
+        value = Math.max(0, value - 1);
+    } else { // minutes & seconds
+        value = (value - 1 + 60) % 60;
     }
-    else if (selector == 1){
-        let container = document.getElementById('minute' + id).innerHTML;
-        if (container != 0){
-            container--;
-            document.getElementById('minute' + id).innerHTML = container;
-            }
-        else{
-            document.getElementById('minute' + id).innerHTML = 60;
-        }
-    }
-    else if(selector == 2){
-        let container = document.getElementById('second' + id).innerHTML;
-        if (container != 0){
-            container--;
-            document.getElementById('second' + id).innerHTML = container;
-            }
-        else{
-            document.getElementById('second' + id).innerHTML = 60;
-        }
-    }
-
+    el.value = value;
 }
 
 function handle_hamburger(){
@@ -271,8 +275,8 @@ function handle_pomo_pause(){
 
 function handle_pomo_reset(id) {
     if (id == 0){
-        handle_session_pause();
        if ((timesInSeconds[1] != 0) && (timesInSeconds[1] != Selected_times[1])){
+            handle_session_pause();
             let WarningHolder = document.getElementById("pause-warning-background");
             let WarningParagraph = document.getElementById("warning-p");
             let lostTime = Selected_times[1] - timesInSeconds[1];
@@ -318,9 +322,8 @@ function handle_pomo_reset(id) {
 }
 
 function handle_session_start(){
-    timesInSeconds[0] = Selected_times[0];
-    timesInSeconds[1] = Selected_times[1];
-    timesInSeconds[2] = Selected_times[2];
+
+    
     start_timer(0);
     let startButtonHolder = document.getElementById('session-start-button');
     let pauseButtonHolder = document.getElementById('session-pause-button');
@@ -329,6 +332,13 @@ function handle_session_start(){
     startButtonHolder.classList.add('pressed-start');
     pauseButtonHolder.classList.remove('pressed-pause');
     startButtonHolder.classList.remove('pressed-pause');
+
+
+    let PomoPlayButtonHolder = document.getElementById('pomo-play-button');
+    let PomoPauseButtonHolder = document.getElementById('pomo-pause-button');
+    PomoPlayButtonHolder.classList.toggle('pressed-pause');
+    PomoPauseButtonHolder.classList.toggle('pressed-pause');
+
     start_timer(1);
 }
 
@@ -336,14 +346,21 @@ function handle_session_pause(){
     if (timesInSeconds[1] == 0){
         rest_skip_button();
     }
+    
     pause_timer(1); 
+
     let startButtonHolder = document.getElementById('session-start-button');
     let pauseButtonHolder = document.getElementById('session-pause-button');
-
     pauseButtonHolder.classList.toggle('pressed-start')
     startButtonHolder.classList.toggle('pressed-start')
     pauseButtonHolder.classList.toggle('pressed-pause')
     startButtonHolder.classList.toggle('pressed-pause')
+
+
+    let PomoPlayButtonHolder = document.getElementById('pomo-play-button');
+    let PomoPauseButtonHolder = document.getElementById('pomo-pause-button');
+    PomoPlayButtonHolder.classList.toggle('pressed-pause');
+    PomoPauseButtonHolder.classList.toggle('pressed-pause');
 
     pause_timer(0);
 
@@ -453,9 +470,9 @@ function handle_edit_number_change(seconds, selector){
     let mainTimerHolder = document.getElementById('timer_number' + selector);
     mainTimerHolder.innerHTML = format_time(seconds);
 
-    editHourHolder.innerHTML = formatedHours;
-    editMinuteHolder.innerHTML = formatedMinutes;
-    editSecondHolder.innerHTML = formatedSeconds;
+    editHourHolder.value = formatedHours;
+    editMinuteHolder.value = formatedMinutes;
+    editSecondHolder.value = formatedSeconds;
 }
 
 // backend-function

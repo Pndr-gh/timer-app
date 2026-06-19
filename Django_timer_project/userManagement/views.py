@@ -43,7 +43,7 @@ def login_view(request):
 @login_required
 def profile_view(request):
     y = range(4)
-    sessionObjects = SessionTimer.objects.all()
+    sessionObjects = SessionTimer.objects.filter(user = request.user)
     cycle_amount = 0
     all_minute = 0
     all_session = 0

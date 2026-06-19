@@ -26,6 +26,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     width: 45%;
+    gap: 1rem;
     aspect-ratio: 1 / 2;
     border-radius: 10px;
     justify-content: space-around;
@@ -88,11 +89,12 @@ button:hover {
     align-items: center;
 }
 
-/* .timer-selector-div {
-    display: flex;
-    
-} */
 
+.time-selector-div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
 
 .time-selector-div div{
     text-align: center;
@@ -443,7 +445,29 @@ button:hover {
     left: 1rem;
 }
 
+#pomo-play-button {
+    display: none;
+}
 
+#pomo-play-button.pressed-pause{
+    display: block;
+}
+
+
+#pomo-pause-button{
+    display: block;
+}
+
+#pomo-pause-button img{
+    position: absolute;
+    width: 35%;
+    left: 0rem;
+    bottom: 0rem;
+}
+
+#pomo-pause-button.pressed-pause {
+    display: none;
+}
 
 
 .timer-num {
