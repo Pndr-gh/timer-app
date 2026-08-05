@@ -116,7 +116,7 @@
                 </div>
             </div>
             
-            <div class= "timer-div rest-divs" id="rest-timer-overlay-div">     
+            <div class= "timer-div rest-divs" id="rest-timer-overlay-div">
             </div>
 
             <div class= "timer-div rest-divs rest-timer-div" id="rest-timer-div">
@@ -131,6 +131,13 @@
 
                 </span>
             </div>
+            
+            <div class="timeline-flex" id="timeline_flex">
+
+
+
+
+            </div>          
             
         </div>
         
@@ -164,14 +171,14 @@
             document.getElementById("timer_number" + {{forloop.counter0}}).innerHTML =
             format_time(Selected_times[{{forloop.counter0}}]);
             
-            document.getElementById("hour" + {{forloop.counter0}}).innerHTML =
-            Math.floor(Selected_times[{{forloop.counter0}}] / 3600)
+            document.getElementById("hour" + {{forloop.counter0}}).value =
+            Math.floor(Selected_times[{{forloop.counter0}}] / 3600);
 
-            document.getElementById("minute" + {{forloop.counter0}}).innerHTML =
-            Math.floor(Selected_times[{{forloop.counter0}}] / 60) % 60
+            document.getElementById("minute" + {{forloop.counter0}}).value =
+            Math.floor(Selected_times[{{forloop.counter0}}] / 60) % 60;
 
-            document.getElementById("second" + {{forloop.counter0}}).innerHTML =
-            Math.floor(Selected_times[{{forloop.counter0}}] % 60)
+            document.getElementById("second" + {{forloop.counter0}}).value =
+            Math.floor(Selected_times[{{forloop.counter0}}] % 60);
             
         {% endfor %}
     </script>

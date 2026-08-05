@@ -135,3 +135,9 @@ def save_time_prefrences(request):
     else:
         return JsonResponse({'error': 'Invalid request'}, status= 400)
     
+
+# @login_required
+# def timeline_starter_view(request):
+#     if request.method == "POST":
+        
+    

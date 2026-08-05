@@ -127,7 +127,7 @@ html{
 .hamburger{
     width: 100%;
     display: flex;
-    justify-content: end;
+    justify-content: start;
     margin-right: 1rem;
 
 }
@@ -136,7 +136,7 @@ html{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 15%;
+    width: 3rem;
     aspect-ratio: 1 / 1;
     padding: 1rem;
     border: 0px;
