@@ -8,12 +8,15 @@ from django.contrib.auth import login
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
+
+navbar = ['Timer', 'Tasks', 'Calender', 'Stats', 'Signup']
+
+
 def signUp_view(request):
-    y = range(4)
-    navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Signup']
+
     if request.method == 'GET':
         form = UserCreationForm()
-        return render(request, 'register.html', {'form': form, 'y': y, 'navbar': navbar})
+        return render(request, 'register.html', {'form': form, 'navbar': navbar})
     
     elif request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -21,7 +24,7 @@ def signUp_view(request):
             formErrors = form.errors
             print(formErrors)
 
-            return render(request, 'register.html', {'form': form, 'y': y, 'navbar': navbar, 'erorrs': formErrors})
+            return render(request, 'register.html', {'form': form, 'navbar': navbar, 'erorrs': formErrors})
 
         else:       
 
@@ -36,13 +39,12 @@ def first_page_view(request):
         return redirect("Timer")
 
 def login_view(request):  
-    y = range(4)
-    navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Signup']
-    return render(request, 'login.html', {'y': y, 'navbar': navbar})
+
+    return render(request, 'login.html', {'navbar': navbar})
 
 @login_required
 def profile_view(request):
-    y = range(4)
+
     sessionObjects = SessionTimer.objects.filter(user = request.user)
     cycle_amount = 0
     all_minute = 0
@@ -51,5 +53,4 @@ def profile_view(request):
         cycle_amount += sessionObjects[x].pomodoro_cycles
         all_minute += sessionObjects[x].minute_amount
         all_session += 1
-    navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Signup']
-    return render(request, 'profile.html', {'y': y, 'navbar': navbar, 'cycle_amount': cycle_amount, 'all_minute': all_minute, 'all_session': all_session})
+    return render(request, 'profile.html', {'navbar': navbar, 'cycle_amount': cycle_amount, 'all_minute': all_minute, 'all_session': all_session})

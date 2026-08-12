@@ -8,10 +8,26 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 
+
+import matplotlib
+import matplotlib.pyplot as plt
+import io
+import urllib, base64
+
+import datetime
+
+
+
+
+matplotlib.use('Agg')
+
+
+navbar = ['Timer', 'Tasks', 'Calender', 'Stats', 'Signup']
+
+
 def timer_view(request):
     
     y = ['session', 'pomodoro']
-    navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Signup']
 
     if request.user.is_authenticated:
         prefs, created = PersonalPrefrences.objects.get_or_create(user=request.user)
@@ -34,8 +50,40 @@ def task_view(request):
 def calender_view(request):
     return HttpResponse('calender view')
 
-def goal_view(request):
-    return HttpResponse('long-term-goals view')
+@login_required
+def stats_view(request):
+    today = timezone.now().date()
+
+
+    all_objects = (SessionTimer.objects.filter(user=request.user, pomodoro_cycles__isnull=False))
+
+    print(all_objects.count())
+
+    minute_per_day = {}
+    holder = None
+    for x in range(6, -1 ,-1):
+
+        target_day = today - datetime.timedelta(days= x)
+
+        target_day_sessions = all_objects.filter(
+            start_time__year = target_day.year,
+            start_time__month = target_day.month,
+            start_time__day = target_day.day
+        )
+
+        print(target_day_sessions.count())
+        
+        day_name = target_day.strftime("%a")
+        minute_per_day[day_name] = 0
+        for ses in target_day_sessions:
+            minute_per_day[day_name] += ses.minute_amount
+
+    
+      
+
+
+
+    return render(request, "stats.html", {'navbar': navbar, "minute_per_day": minute_per_day})
 
 # fetch functions
 
@@ -72,6 +120,7 @@ def save_cycles_view(request):
 
             parrent_session = SessionTimer.objects.get(id= session_id)
             parrent_session.pomodoro_cycles += 1
+            parrent_session.minute_amount += minutes
             parrent_session.save()
 
             return JsonResponse({

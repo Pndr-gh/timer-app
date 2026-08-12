@@ -22,7 +22,7 @@ from django.http import HttpResponse
 from django.contrib.auth import views as auth_views
 
 y = range(4)
-navbar = ['Timer', 'Tasks', 'Calender', 'Long term goals', 'Signup']
+navbar = ['Timer', 'Tasks', 'Calender', 'stats', 'Signup']
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,7 +30,7 @@ urlpatterns = [
     path('signup/', signUp_view, name='Signup'),
     path('task/', task_view, name="Tasks"),
     path('calender/', calender_view, name="Calender"),
-    path('long-term-goals/', goal_view, name="Long term goals"),
+    path('stats/', stats_view, name="Stats"),
     path('profile/', profile_view, name="profile"),
     path('login/', auth_views.LoginView.as_view(template_name = "login.html", extra_context = {'y': y, 'navbar': navbar}), name = 'login'),
     path('logout/', auth_views.LogoutView.as_view(next_page = 'Timer' ), name= "logout"),
