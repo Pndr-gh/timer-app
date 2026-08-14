@@ -2,16 +2,66 @@
 {% load static %}
 
 {% block css %}
+<style>
+    .stats-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 2rem;
+        font-family: sans-serif;
+    }
+    .chart-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin-top: 1rem;
+        box-shadow: 0px 0px 12px 6px rgba(49, 173, 255, 0.75);
+    }
+    .guest-message {
+        text-align: center;
+        margin-top: 100px;
+    }
+    .login-link {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #4A90E2;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
 
+    h2 {
+        color: white;
+    }
+</style>
 {% endblock css %}
 
-
 {% block main %}
-hello
-{{ minute_per_day }}
+<main class="stats-container">
+
+    <!-- If they are a guest -->
+    {% if is_guest %}
+        <div class="guest-message">
+            <h2>You must log in to view your stats!</h2>
+            <!-- Make sure 'login' matches the name="" in your urls.py for the login page -->
+            <a href="{% url 'login' %}" class="login-link">Go to Login Page</a>
+        </div>
+
+    <!-- If they are logged in -->
+    {% else %}
+        <h2>Your Weekly Progress</h2>
+        
+        {% if chart %}
+            <img src="data:image/png;base64,{{ chart }}" alt="Focus Time Chart" class="chart-image">
+        {% else %}
+            <p>No data available yet. Start focusing!</p>
+        {% endif %}
+
+    {% endif %}
+
+</main>
 {% endblock main %}
 
-
 {% block js %}
-
 {% endblock js %}

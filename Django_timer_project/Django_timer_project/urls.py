@@ -22,7 +22,7 @@ from django.http import HttpResponse
 from django.contrib.auth import views as auth_views
 
 y = range(4)
-navbar = ['Timer', 'Tasks', 'Calender', 'stats', 'Signup']
+navbar = ['Timer', 'Tasks', 'Calender', 'Stats', 'Signup']
 
 urlpatterns = [
     path('admin/', admin.site.urls),

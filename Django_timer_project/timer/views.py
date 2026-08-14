@@ -50,19 +50,21 @@ def task_view(request):
 def calender_view(request):
     return HttpResponse('calender view')
 
-@login_required
 def stats_view(request):
+    navbar = ['Timer', 'Tasks', 'Calender', 'Stats', 'Signup']
+
+
+    if not request.user.is_authenticated:
+        
+        return render(request, "stats.html", {'navbar': navbar, 'is_guest': True})
+
+
+
     today = timezone.now().date()
-
-
-    all_objects = (SessionTimer.objects.filter(user=request.user, pomodoro_cycles__isnull=False))
-
-    print(all_objects.count())
-
+    all_objects = SessionTimer.objects.filter(user=request.user, pomodoro_cycles__isnull=False)
     minute_per_day = {}
-    holder = None
-    for x in range(6, -1 ,-1):
 
+    for x in range(6, -1 ,-1):
         target_day = today - datetime.timedelta(days= x)
 
         target_day_sessions = all_objects.filter(
@@ -70,20 +72,42 @@ def stats_view(request):
             start_time__month = target_day.month,
             start_time__day = target_day.day
         )
-
-        print(target_day_sessions.count())
         
         day_name = target_day.strftime("%a")
         minute_per_day[day_name] = 0
         for ses in target_day_sessions:
             minute_per_day[day_name] += ses.minute_amount
 
+
+
+    days = list(minute_per_day.keys())
+    minutes = list(minute_per_day.values())
+
+    plt.figure(figsize=(5.5, 2.7))
+    plt.plot(days, minutes, marker='o', color='#4A90E2', linestyle='-', linewidth=2, markersize=8)
+    
+    plt.title('Daily Focused Time (Last 7 Days)', fontsize=14, pad=15)
+    plt.ylabel('Minutes', fontsize=12)
+    plt.grid(True, linestyle='--', alpha=0.5)
+    plt.ylim(bottom=0)
+    
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', bbox_inches='tight')
+    buf.seek(0)
+    
+    string = base64.b64encode(buf.read())
+    uri = urllib.parse.quote(string)
+    plt.close()
+
+
+
+    return render(request, "stats.html", {'navbar': navbar, 'minute_per_day': minute_per_day, 'chart': uri})
+
     
       
 
 
 
-    return render(request, "stats.html", {'navbar': navbar, "minute_per_day": minute_per_day})
 
 # fetch functions
 
