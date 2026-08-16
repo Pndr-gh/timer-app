@@ -49,8 +49,14 @@ def profile_view(request):
     cycle_amount = 0
     all_minute = 0
     all_session = 0
-    for x in range(len(sessionObjects)):
-        cycle_amount += sessionObjects[x].pomodoro_cycles
-        all_minute += sessionObjects[x].minute_amount
-        all_session += 1
+    counter = 0
+    for x in list(sessionObjects):
+
+        cycle_amount += sessionObjects[counter].pomodoro_cycles
+        all_minute += sessionObjects[counter].minute_amount
+
+        if x.end_time != (None):
+            print(x.end_time)
+            all_session += 1
+        counter += 1
     return render(request, 'profile.html', {'navbar': navbar, 'cycle_amount': cycle_amount, 'all_minute': all_minute, 'all_session': all_session})
