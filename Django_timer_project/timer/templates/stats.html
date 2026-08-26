@@ -8,31 +8,47 @@
         flex-direction: column;
         align-items: center;
         margin-top: 2rem;
-        font-family: sans-serif;
     }
     .chart-image {
         max-width: 100%;
         height: auto;
-        border-radius: 8px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 107, 107, 0.6);
         margin-top: 1rem;
-        box-shadow: 0px 0px 12px 6px rgba(49, 173, 255, 0.75);
+        box-shadow: 0px 0px 16px 2px rgba(255, 107, 107, 0.25);
     }
     .guest-message {
         text-align: center;
-        margin-top: 100px;
+        margin-top: 100px;  
     }
     .login-link {
         display: inline-block;
         margin-top: 20px;
         padding: 10px 20px;
-        background-color: #4A90E2;
+        background-color: #FF6B6B;
         color: white;
         text-decoration: none;
+        transition: background-color 0.2s ease, transform 0.1s ease;
         border-radius: 5px;
     }
 
+    .login-link:hover {
+        background-color: #fa5252;
+        transform: translateY(-1px);
+    }
+
     h2 {
-        color: white;
+        color: #F8FAFC;
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-shadow: 0px 0px 20px rgba(0, 0, 0, 0.44);
+    }
+
+    #nav-element-Stats {
+    text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.5);
+    color: white;
+    text-decoration: underline;
     }
 </style>
 {% endblock css %}

@@ -3,23 +3,24 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from timer.models import *
+from userManagement.forms import CustomUserCreationForm
 
 from django.contrib.auth import login
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 
-navbar = ['Timer', 'Tasks', 'Calender', 'Stats', 'Signup']
+navbar = ['Timer', 'Stats', 'Signup']
 
 
 def signUp_view(request):
 
     if request.method == 'GET':
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
         return render(request, 'register.html', {'form': form, 'navbar': navbar})
     
     elif request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if not form.is_valid():
             formErrors = form.errors
             print(formErrors)

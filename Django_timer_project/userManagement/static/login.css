@@ -1,22 +1,69 @@
 .login-main-flex {
     display: flex;
     flex-direction: column;
-    background-color: aqua;
-    width: 50%;
+    background-color: #27282F;
+    box-shadow: 0px 0px 20px 6px #ff6b6b21;
+    width: 85%;
+    height: 31rem;
     margin: 3rem auto 0px auto;
+    border-radius: 0.5rem;
     gap: 1rem;
 }
 
+@media (min-width: 600px) {
+    .login-main-flex {
+        width: 50%;
+    }
+}
+
+@media (min-width: 1240px){
+    .login-main-flex {
+        width: 30%;
+    }
+}
+
+.login-main-flex label {
+    margin-bottom: 6px;
+    width: 80%;
+    margin: 0 auto 6px auto;
+}
+
+.login-main-flex input {
+    width: 80%;
+    background-color: #3B3C44;
+    border: 1px solid #525460;
+    border-radius: 0.3rem;
+    height: 2rem;
+    margin: 0 auto;
+    color: white;
+}
+
+.login-main-flex input:focus {
+    border-color: #FF6B6B;
+    outline: none;
+}
 .login-title-div {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
     display: flex;
     width: 100%;
     justify-content: center;
 }
 
+.login-title-text {
+    color: #FF6B6B;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
 .login-username-div {
     display: flex;
     flex-direction: column;
+    margin-bottom: 0.5rem;
+}
+
+.login-username-div label {
+    color:  white;
 }
 
 .login-password-div {
@@ -24,12 +71,98 @@
     flex-direction: column;
 }
 
-.login-button-div {
-    display: flex;
-    justify-content: space-evenly;
+.login-password-div label {
+    color: white;
 }
 
-.login-createNewAccount-div {
+
+
+.login-button-div {
     display: flex;
     justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.login-button {
+    color: white;
+    background-color: #FF6B6B;
+    box-shadow: 0px 0px 20px 6px #ff6b6b21;
+    font-size: 1.2rem;
+    font-weight: 500;
+    border: none;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+    width: 80%;
+    border-radius: 0.5rem;
+    transition: 0.2s ease;
+}
+
+.login-button:hover {
+    cursor: pointer;
+    background-color: #ff6b6bbd;
+}
+
+.login-button:active {
+    scale: 0.98;
+}
+
+.or-wrapper-div {
+    margin-top: 1rem;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.or-wrapper-div div {
+    width: 50%;
+    height: 1px;
+    background-color: #94a3b868;
+}
+
+.or-text {
+    color: #94A3B8;
+    padding: 0 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1;
+    transform: translateY(-1px);
+}
+
+.other-buttons-div {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.other-buttons-div button, .other-buttons-div a {
+    background-color: #3b3c449d;
+    color: #FF6B6B;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: none;
+    width:40%;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    text-align: center;
+    box-sizing: border-box;
+
+    
+}
+
+.other-buttons-div button:hover, .other-buttons-div a:hover{
+
+    background-color: #3b3c4476;
+    cursor: pointer;
+
+}
+
+#guest-button {
+    color: #94A3B8;
+}
+
+.login-page-button {
+    display: none;
 }

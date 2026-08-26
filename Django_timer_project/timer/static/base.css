@@ -5,23 +5,21 @@
 
 body{
     margin: 0px;
-    background-color: grey;
+    background-color: rgb(69, 70, 79);
 
 }
 
-html{
-    background-color: grey;
+main {
     margin: 0 5% 0 5%;
-    /* border-left: 2px solid rgb(151, 151, 151);
-    border-right: 2px solid rgb(151, 151, 151); */
+
 }
 @media (min-width: 600px){
-    html {
+    main {
         margin: 0 8% 0 8%;
     }
 }
 @media (min-width: 1240px) {
-    html {
+    main {
         margin: 0 14% 0 14%;
     }
 }
@@ -34,11 +32,14 @@ html{
 
 .navbar{
     display: flex;
+    color: #F4F4F6;
     height: 5rem;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    background-color: gray;
+    background-color: rgb(69, 70, 79);
     box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.3);
+    border-bottom-right-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
     
 
 }
@@ -56,7 +57,7 @@ html{
     border-radius: 10%;
     padding: 0.8rem;
     color: white;
-    background-color: gray;
+    background-color: rgb(69, 70, 79);
 
 }
 .username-button {
@@ -68,18 +69,40 @@ html{
     border-radius: 10%;
     padding: 0.8rem;
     color: white;
-    background-color: gray;
+    background-color: rgb(69, 70, 79);
 
 }
 
 .logout-button {
     border: 1px solid rgb(239, 156, 156);
     box-shadow: 0px 0px 10px 0px rgba(255, 153, 153, 0.3);
+    box-sizing: border-box;
+    
 
 }
 
 .guest-span {
+    color: #a6aeb8;
+    font-weight: 500;
+    box-sizing: border-box;
+}
+
+.login-page-button {
+    box-sizing: border-box;
     color: white;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #74e05ca4;
+    background-color: #74e05c0c;
+}
+
+.login-page-button:hover {
+    background-color: #74e05c2b;
+}
+
+.login-page-button:active {
+    scale: 0.98;
 }
 
 .navbar a {
@@ -112,7 +135,7 @@ html{
 .nav-element{
     padding: 1rem 1rem 1rem 1rem;
     /* border-radius: 30%; */
-    color: white;
+    color: #a6aeb8;
     display: none;
     font-size: 1rem;
     font-weight: 600;

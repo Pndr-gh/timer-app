@@ -22,14 +22,12 @@ from django.http import HttpResponse
 from django.contrib.auth import views as auth_views
 
 y = range(4)
-navbar = ['Timer', 'Tasks', 'Calender', 'Stats', 'Signup']
+navbar = ['Timer', 'Stats', 'Signup']
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('timer/', timer_view, name='Timer'),
     path('signup/', signUp_view, name='Signup'),
-    path('task/', task_view, name="Tasks"),
-    path('calender/', calender_view, name="Calender"),
     path('stats/', stats_view, name="Stats"),
     path('profile/', profile_view, name="profile"),
     path('login/', auth_views.LoginView.as_view(template_name = "login.html", extra_context = {'y': y, 'navbar': navbar}), name = 'login'),

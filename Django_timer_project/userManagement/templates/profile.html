@@ -9,17 +9,34 @@
 
 <main>
     <div class="upperbar-div">
-        <span class="username-holder-span">Username : <span style="color: aqua;">{{ user.username }}</span></span>
-        <button class="change-username-button">Change</button>
+        <span class="username-holder-span">Username : <span style="color: #FF6B6B;
+                                                                    margin-left: 0.25rem;">{{ user.username }}</span></span>
 
     </div>
 
 
 
+
     <div class="statsPage-div">
-        <span>total cycles: {{ cycle_amount }}</span>
-        <span>total sessions: {{ all_session }}</span>
-        <span>total minutes focused: {{ all_minute }}</span>
+
+        <div class="statsPage-row">
+            <span>total focused minutes <strong>:</strong> </span>
+            <div>{{ all_minute }}</div>
+        </div>
+
+        <div class="statsPage-row">
+            <span>total cycles <strong>:</strong> </span>
+            <div>{{ cycle_amount }}</div>
+        </div>
+
+        <div class="statsPage-row">
+            <span>total sessions <strong>:</strong> </span>
+            <div>{{ all_session }}</div>
+        </div>
+
+
+
+
     </div>
 </main>
 
@@ -37,7 +54,7 @@
 
 
 {% block js %}
-
+<script src="{% static 'profile.js' %}"></script>
 {% endblock js %}
 
 {% endblock main %}

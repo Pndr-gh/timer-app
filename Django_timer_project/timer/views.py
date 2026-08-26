@@ -22,7 +22,7 @@ import datetime
 matplotlib.use('Agg')
 
 
-navbar = ['Timer', 'Tasks', 'Calender', 'Stats', 'Signup']
+navbar = ['Timer', 'Stats', 'Signup']
 
 
 def timer_view(request):
@@ -51,7 +51,6 @@ def calender_view(request):
     return HttpResponse('calender view')
 
 def stats_view(request):
-    navbar = ['Timer', 'Tasks', 'Calender', 'Stats', 'Signup']
 
 
     if not request.user.is_authenticated:
@@ -83,17 +82,26 @@ def stats_view(request):
     days = list(minute_per_day.keys())
     minutes = list(minute_per_day.values())
 
-    plt.figure(figsize=(5.5, 2.7))
-    plt.plot(days, minutes, marker='o', color='#4A90E2', linestyle='-', linewidth=2, markersize=8)
+    plt.figure(figsize=(5.5, 2.7), facecolor='#27282F')
+    ax = plt.gca()
+    ax.set_facecolor('#27282F')
+
+    plt.plot(days, minutes, marker='o', color='#FF6B6B', linestyle='-', linewidth=2, markersize=8)
     
-    plt.title('Daily Focused Time (Last 7 Days)', fontsize=14, pad=15)
-    plt.ylabel('Minutes', fontsize=12)
-    plt.grid(True, linestyle='--', alpha=0.5)
+    plt.title('Daily Focused Time (Last 7 Days)', fontsize=14, pad=15, color='#F8FAFC')
+    plt.ylabel('Minutes', fontsize=12, color='#94A3B8')
+    plt.tick_params(colors='#94A3B8')
+    plt.grid(True, linestyle='--', alpha=0.15, color='#FFFFFF')
     plt.ylim(bottom=0)
+
+    for spine in ax.spines.values():
+        spine.set_visible(False)
     
     buf = io.BytesIO()
-    plt.savefig(buf, format='png', bbox_inches='tight')
+    plt.savefig(buf, format='png', bbox_inches='tight', facecolor='#27282F')
     buf.seek(0)
+
+
     
     string = base64.b64encode(buf.read())
     uri = urllib.parse.quote(string)
@@ -140,6 +148,7 @@ def save_cycles_view(request):
             current_cycle.minute_amount = minutes
             current_cycle.end_time = timezone.now()
             current_cycle.save()
+            print(minutes)
 
 
             parrent_session = SessionTimer.objects.get(id= session_id)

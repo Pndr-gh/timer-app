@@ -22,8 +22,8 @@
                     <button type="submit" class="logout-button">Logout</button>
                 </form>
             {% else %}
-                <span class="guest-span">Guest</span>
-                <a href="{% url 'login' %}" class="login-button">Login</a>
+                <span class="guest-span">Guest Mode</span>
+                <a href="{% url 'login' %}" class="login-page-button">Login</a>
             {% endif %}
         </div>
 
@@ -47,6 +47,7 @@
 
 
     {% block main %}{% endblock main %}
+    <script src= "{% static 'timer.js' %}" ></script>
     {% block js %}{% endblock js %}
 </body>
 </html>

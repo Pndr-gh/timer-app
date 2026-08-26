@@ -112,6 +112,7 @@ function start_timer(id){
 
         if (id == 0 && currentSessionId === null){
             addEmptyCycleToTimeline();
+            activeTimelineElement_cssChanger();
             startNewSession();
         }
         else if(id == 1 && currentCycleId === null){
@@ -156,13 +157,15 @@ function start_timer(id){
 
             if (id == 1){
                 handle_pomo_pause();
-                sendDataToDjango(Math.floor(Selected_times[0] / 60));
+                sendDataToDjango(Math.floor(Selected_times[1] / 60));
                 timerNumber.innerHTML = format_time(Selected_times[1]);
                 changeEmptyToDoneCycleInTimeline();
             }
             else if (id == 2){
                 rest_skip_button();
                 start_timer(1);
+                change_restmode_css();
+                activeTimelineElement_cssChanger();
             }
             
             return;
@@ -253,10 +256,6 @@ function lower_arrow(selector, id) {
     el.value = value;
 }
 
-function handle_hamburger(){
-    let navHolder = document.getElementById('navbar');
-    navHolder.classList.toggle("mobile-view");
-}
 
 function handle_edit(){
     handle_session_pause();
@@ -290,6 +289,8 @@ function handle_pomo_pause(){
     restDivHolder.classList.add('rest-mode');
     restTimeDivHolder.classList.add('rest-mode');
 
+    change_restmode_css();
+
 }
 
 function handle_pomo_reset(id) {
@@ -304,7 +305,7 @@ function handle_pomo_reset(id) {
             let lostTime = Selected_times[1] - timesInSeconds[1];
  
             WarningHolder.classList.toggle('warning-view');
-            WarningParagraph.innerHTML = `You will lose  <strong>${format_time(lostTime)}</strong>  of your session progress. Are you sure you want to continue?`;
+            WarningParagraph.innerHTML = `You will lose -<strong> ${format_time(lostTime)} </strong>- of your session progress.<br> Are you sure you want to continue?`;
 
             }  
     }else if(id == 1 && warning_selector == 0){
@@ -387,16 +388,16 @@ function handle_session_pause(){
 
     let startButtonHolder = document.getElementById('session-start-button');
     let pauseButtonHolder = document.getElementById('session-pause-button');
-    pauseButtonHolder.classList.toggle('pressed-start')
-    startButtonHolder.classList.toggle('pressed-start')
-    pauseButtonHolder.classList.toggle('pressed-pause')
-    startButtonHolder.classList.toggle('pressed-pause')
+    pauseButtonHolder.classList.remove('pressed-start')
+    startButtonHolder.classList.remove('pressed-start')
+    pauseButtonHolder.classList.add('pressed-pause')
+    startButtonHolder.classList.add('pressed-pause')
 
 
     let PomoPlayButtonHolder = document.getElementById('pomo-play-button');
     let PomoPauseButtonHolder = document.getElementById('pomo-pause-button');
-    PomoPlayButtonHolder.classList.toggle('pressed-pause');
-    PomoPauseButtonHolder.classList.toggle('pressed-pause');
+    PomoPlayButtonHolder.classList.add('pressed-pause');
+    PomoPauseButtonHolder.classList.add('pressed-pause');
 
     pause_timer(0);
 
@@ -438,6 +439,9 @@ function rest_skip_button() {
     if (startButtonHolder.classList.contains('pressed-pause')){
         handle_session_start(); 
     }
+
+    change_restmode_css();
+    activeTimelineElement_cssChanger();
     
 
 
@@ -744,6 +748,7 @@ function addEmptyCycleToTimeline() {
 
         timelineElement.appendChild(div);
     }
+    
 
 }
 
@@ -755,6 +760,12 @@ function changeEmptyToDoneCycleInTimeline() {
     new_element.textContent = tc;
     firstTimelineElement.replaceWith(new_element);
 
+}
+
+function activeTimelineElement_cssChanger() {
+    const activeTimelineElement = document.querySelector('.notDone-timeline-elements');
+    activeTimelineElement.classList.add('active-timeline-element');
+    console.log('active-timeline-cssChanger ran!')
 }
 
 function SessionElementInTimeline(){
@@ -773,3 +784,40 @@ function SessionElementInTimeline(){
 
     timelineElement.append(allSessionDiv);
 }
+
+// other functions
+
+function handle_hamburger(){
+    let navHolder = document.getElementById('navbar');
+    navHolder.classList.toggle("mobile-view");
+}
+
+function change_restmode_css(){
+    let headElement = document.querySelector('head');
+    let playButtonElement = document.getElementById('session-start-button');
+    let restDivHolder = document.getElementById('rest-timer-div');
+    const existingCss = document.getElementById('rest-css');
+
+
+    if (!existingCss){
+
+        const restCss = document.createElement('link');
+        restCss.rel = 'stylesheet';
+        restCss.id = 'rest-css';
+        restCss.href = restDivHolder.dataset.restCss;
+        headElement.append(restCss);
+
+        console.log('css changed');
+    }
+    
+    else {
+        if (existingCss){
+            existingCss.remove();
+
+            console.log('css not changed');
+        }
+    }
+    
+}
+
+

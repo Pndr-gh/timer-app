@@ -27,14 +27,22 @@
             {{ form.password }}
             {{ form.password.errors }}
         </div>
+
         <div class="login-button-div">
             <button class="login-button" type="submit">Login</button>
-            <button class="guest-button">Guest</button>
         </div>
-        <div class="login-createNewAccount-div">
-            <a href="{% url 'Signup' %}">Create a new accout</a>
+
+        <div class="or-wrapper-div">
+            <div class="left-or-line"></div>
+            <span class="or-text">or</span>
+            <div class="right-or-line"></div>
         </div>
-        
+
+        <div class="other-buttons-div">
+            <a id="guest-button" href="{% url 'Timer' %}">Guest mode</a>
+            <a href="{% url 'Signup' %}">Create a new account</a>
+        </div>
+
     </main>
 
 </form>
